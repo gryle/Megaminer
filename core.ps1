@@ -543,6 +543,7 @@ while ($true) {
                                                         PoolPass= $PoolPass
                                                         PoolPrice=$Price
                                                         PoolPriceDual=$PriceDual
+														PoolRewardType=$Pool.RewardType
                                                         PoolWorkers = $Pool.PoolWorkers
                                                         PoolWorkersDual = $PoolDual.PoolWorkers
                                                         Port = if (($Types |Where-object type -eq $TypeGroup.type).count -le 1 -and $DelayCloseMiners -eq 0) {$miner.ApiPort} else {$null}
@@ -697,6 +698,7 @@ while ($true) {
                             PoolHashrate         = $null
                             PoolHashrateDual     = $null
                             PoolPass             = $Miner.PoolPass
+							PoolRewardType       = $Miner.PoolRewardType
                             Port                 = $Miner.Port
                             PrelaunchCommand     = $Miner.PrelaunchCommand
                             Process              = $null
@@ -868,6 +870,12 @@ while ($true) {
 
     ErrorsToLog $LogFile
    
+    $RunningSubminers=($ActiveMiners.subminers | Where-Object Status -eq 'Running' |select-object Idf).Idf
+	foreach ($RunningSubminer in $RunningSubminers) { 
+		$PItime=$config.("INTERVAL_"+$ActiveMiners[$RunningSubminer].PoolRewardType)
+		WriteLog ("Interval for pool "+[string]$ActiveMiners[$RunningSubminer].PoolName+" is "+$PItime) $LogFile $False
+		if ([int]$PItime -lt $NextInterval) {$NextInterval= [int]$PItime}
+	}
 
     $FirstLoopExecution=$True   
     $LoopStarttime=Get-Date
