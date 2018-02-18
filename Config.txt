@@ -53,7 +53,9 @@
 --Example for all day cost [{"HourStart":0,"HourEnd":23,"CostKwh":0.105609}]
 --Example for two periods cost [{"HourStart":12,"HourEnd":21,"CostKwh":0.105609},{"HourStart":22,"HourEnd":11,"CostKwh":0.703759}]
 
-@@ELECTRICITYCOST=[{"HourStart":0,"HourEnd":23,"CostKwh":0}]
+-- vazio: 0,0912€ fora vazio: 0,197€
+-- @@ELECTRICITYCOST=[{"HourStart":8,"HourEnd":21,"CostKwhBTC":0.0000213401},{"HourStart":22,"HourEnd":7,"CostKwhBTC":0.00000987654}]
+@@ELECTRICITYCOST=[{"HourStart":8,"HourEnd":21,"CostKwh":0.197},{"HourStart":22,"HourEnd":7,"CostKwh":0.0912}]
 
 
 
@@ -123,9 +125,9 @@
 
 
 @@POOLPROFITFACTOR_AHASHPOOL=0.7
-@@POOLPROFITFACTOR_NICEHASH=1
+@@POOLPROFITFACTOR_NICEHASH=0.95
 @@POOLPROFITFACTOR_MININGPOOLHUB=0.8
-@@POOLPROFITFACTOR_ZPOOL=0.7
+@@POOLPROFITFACTOR_ZPOOL=0.6
 @@POOLPROFITFACTOR_ZERGPOOL=0.5
 
 
