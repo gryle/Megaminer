@@ -1,2 +1,5 @@
 
 *.ini
+Bin/
+Logs/
+Stats/
