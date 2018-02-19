@@ -399,11 +399,20 @@ while ($true) {
                                                 }
                                                 else  {$WorkerName2=$WorkerName} 
 
+										$PhoenixEthProto = "2"
+										# -esm   Ethereum Stratum mode. 0 - eth-proxy mode (for example, dwarpool.com), 1 - qtminer mode (for example, ethpool.org), 2 - miner-proxy mode (for example, coinotron.com), 3 - nicehash mode. 0 is default.
+										#   -proto <n> Selects the kind of stratum protocol for the ethash pool:     1: miner-proxy stratum spec (e.g. coinotron)     2: eth-proxy (e.g. dwarfpool, nanopool) - this is the default, works for most pools     3: qtminer (e.g. ethpool)     4: EthereumStratum/1.0.0 (e.g. nicehash)
+                                        Switch ($Pool.EthStMode) {
+                                        "0"{$PhoenixEthProto="2"}
+                                        "1"{$PhoenixEthProto="3"}
+                                        "2"{$PhoenixEthProto="1"}
+                                        "3"{$PhoenixEthProto="4"}
+									    }
 
-                                        $Arguments = $Miner.Arguments  -replace '#PORT#',$Pool.Port -replace '#SERVER#',$Pool.Host -replace '#PROTOCOL#',$Pool.Protocol -replace '#LOGIN#',$Pool.user -replace '#PASSWORD#',$Pool.Pass -replace "#GpuPlatform#",$TypeGroup.GpuPlatform  -replace '#ALGORITHM#',$Algoname -replace '#ALGORITHMPARAMETERS#',$Algo.PSObject.Properties.Value -replace '#WORKERNAME#',$WorkerName2  -replace '#DEVICES#',$TypeGroup.Gpus   -replace '#DEVICESCLAYMODE#',$TypeGroup.GpusClayMode -replace '#DEVICESETHMODE#',$TypeGroup.GpusETHMode -replace '#GROUPNAME#',$TypeGroup.Groupname -replace "#ETHSTMODE#",$Pool.EthStMode -replace "#DEVICESNSGMODE#",$TypeGroup.GpusNsgMode                   
+                                        $Arguments = $Miner.Arguments  -replace '#PORT#',$Pool.Port -replace '#SERVER#',$Pool.Host -replace '#PROTOCOL#',$Pool.Protocol -replace '#LOGIN#',$Pool.user -replace '#PASSWORD#',$Pool.Pass -replace "#GpuPlatform#",$TypeGroup.GpuPlatform  -replace '#ALGORITHM#',$Algoname -replace '#ALGORITHMPARAMETERS#',$Algo.PSObject.Properties.Value -replace '#WORKERNAME#',$WorkerName2  -replace '#DEVICES#',$TypeGroup.Gpus   -replace '#DEVICESCLAYMODE#',$TypeGroup.GpusClayMode -replace '#DEVICESETHMODE#',$TypeGroup.GpusETHMode -replace '#GROUPNAME#',$TypeGroup.Groupname -replace "#ETHSTMODE#",$Pool.EthStMode -replace "#DEVICESNSGMODE#",$TypeGroup.GpusNsgMode -replace "#PHOENIXETHPROTO#",$PhoenixEthProto
                                         if ($Miner.PatternConfigFile -ne $null) {
                                                         $ConfigFileArguments =  replace_foreach_gpu (get-content $Miner.PatternConfigFile -raw)  $TypeGroup.Gpus
-                                                        $ConfigFileArguments = $ConfigFileArguments -replace '#PORT#',$Pool.Port -replace '#SERVER#',$Pool.Host -replace '#PROTOCOL#',$Pool.Protocol -replace '#LOGIN#',$Pool.user -replace '#PASSWORD#',$Pool.Pass -replace "#GpuPlatform#",$TypeGroup.GpuPlatform   -replace '#ALGORITHM#',$Algoname -replace '#ALGORITHMPARAMETERS#',$Algo.PSObject.Properties.Value -replace '#WORKERNAME#',$WorkerName2  -replace '#DEVICES#',$TypeGroup.Gpus -replace '#DEVICESCLAYMODE#',$TypeGroup.GpusClayMode  -replace '#DEVICESETHMODE#',$TypeGroup.GpusETHMode -replace '#GROUPNAME#',$TypeGroup.Groupname -replace "#ETHSTMODE#",$Pool.EthStMode -replace "#DEVICESNSGMODE#",$TypeGroup.GpusNsgMode                   
+                                                        $ConfigFileArguments = $ConfigFileArguments -replace '#PORT#',$Pool.Port -replace '#SERVER#',$Pool.Host -replace '#PROTOCOL#',$Pool.Protocol -replace '#LOGIN#',$Pool.user -replace '#PASSWORD#',$Pool.Pass -replace "#GpuPlatform#",$TypeGroup.GpuPlatform   -replace '#ALGORITHM#',$Algoname -replace '#ALGORITHMPARAMETERS#',$Algo.PSObject.Properties.Value -replace '#WORKERNAME#',$WorkerName2  -replace '#DEVICES#',$TypeGroup.Gpus -replace '#DEVICESCLAYMODE#',$TypeGroup.GpusClayMode  -replace '#DEVICESETHMODE#',$TypeGroup.GpusETHMode -replace '#GROUPNAME#',$TypeGroup.Groupname -replace "#ETHSTMODE#",$Pool.EthStMode -replace "#DEVICESNSGMODE#",$TypeGroup.GpusNsgMode -replace "#PHOENIXETHPROTO#",$PhoenixEthProto                  
                                                     }
 
                                         $PoolPass=$Pool.Pass -replace '#WORKERNAME#',$WorkerName2

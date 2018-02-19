@@ -1,0 +1,16 @@
+{
+"Path" : ".\\Bin\\PhoenixMiner_2.6\\PhoenixMiner.exe",
+"ExtractionPath" : ".\\Bin\\",
+"Uri" : "",
+"Types" : ["NVIDIA"],
+"Arguments" : "-rmode 0 -cdmport #APIPORT# -cdm 1 -pool #SERVER#:#PORT# -wal #LOGIN# -pass #PASSWORD# -proto #PHOENIXETHPROTO# -coin auto -nvidia #ALGORITHMPARAMETERS#",
+"API" : "PhoenixMiner",
+"Fee" : "0.015",
+"APIPort" : 23344,
+"DualMining": false,
+"PrelaunchCommand":"",
+"Algorithms": [
+                {"Ethash":""}
+              ]
+
+}
