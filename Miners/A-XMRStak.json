@@ -1,0 +1,21 @@
+{
+"Path" : ".\\Bin\\xmr-stak-win64\\xmr-stak.exe",
+"ExtractionPath" : ".\\Bin\\",
+"Uri" : "https://github.com/fireice-uk/xmr-stak/releases/download/v2.2.0/xmr-stak-win64.zip",
+"Types" : ["AMD"],
+"GenerateConfigFile" : ".\\Bin\\xmr-stak-win64\\config.txt",
+"PatternConfigFile": ".\\Patterns\\xmr-stak.txt",
+"Arguments" : "--noUAC --noCPU --noNVIDIA --use-nicehash --url #SERVER#:#PORT# --user #LOGIN# --pass #PASSWORD# #ALGORITHMPARAMETERS#",
+"API" : "fireice",
+"Wrap" : false,
+"Dualmining":false,
+"Fee":"0.00",
+"PrelaunchCommand":"",
+"Algorithms": [
+                {"Cryptonight":""}
+              ]
+
+}
+
+
+ 
