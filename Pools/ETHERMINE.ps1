@@ -143,7 +143,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
                                 Protocol      = "stratum+tcp"
                                 Host          = $_.server
                                 Port          = $_.port
-                                User          = $CoinsWallets.get_item($_.symbol)
+                                User          = $CoinsWallets.get_item($_.symbol) + ".#WorkerName#"
                                 Pass          = "x"
                                 Location      = $_.location
                                 SSL           = $false
