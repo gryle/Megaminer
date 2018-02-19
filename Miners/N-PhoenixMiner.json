@@ -5,7 +5,7 @@
 "Types" : ["NVIDIA"],
 "Arguments" : "-rmode 0 -cdmport #APIPORT# -cdm 1 -pool #SERVER#:#PORT# -wal #LOGIN# -pass #PASSWORD# -proto #PHOENIXETHPROTO# -coin auto -nvidia #ALGORITHMPARAMETERS#",
 "API" : "PhoenixMiner",
-"Fee" : "0.015",
+"Fee" : "0.0065",
 "APIPort" : 23344,
 "DualMining": false,
 "PrelaunchCommand":"",
