@@ -119,6 +119,9 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 
 
         $Pools |  ForEach-Object {
+		
+			$Wallet = $CoinsWallets.get_item($_.symbol)
+			if ($Wallet -ne $null -and $Wallet -ne "") {
 
                 try {
                     $RequestW=$null
@@ -143,7 +146,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
                                 Protocol      = "stratum+tcp"
                                 Host          = $_.server
                                 Port          = $_.port
-                                User          = $CoinsWallets.get_item($_.symbol) + ".#WorkerName#"
+                                User          = $Wallet + ".#WorkerName#"
                                 Pass          = "x"
                                 Location      = $_.location
                                 SSL           = $false
@@ -166,13 +169,15 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 								#$LogFile=".\Logs\ETHERMINE.txt"
 								#Writelog ($logtext) $LogFile $False
                 
-                }
-
+					Remove-Variable RequestW
+					Remove-Variable RequestP
+			} else {
+				    writelog ("No wallet for coin "+[string]$_.symbol) $logfile $false
+			}
   
-				Remove-Variable Pools
-				Remove-Variable RequestW
-				Remove-Variable RequestP
-        }
+		}
+		Remove-Variable Pools
+	}
                   
 $Result |ConvertTo-Json | Set-Content $info.SharedFile
 Remove-Variable Result
