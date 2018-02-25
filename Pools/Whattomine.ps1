@@ -115,6 +115,7 @@ if ($Querymode -eq "core"  -or $Querymode -eq "Menu"){
                         $Id = $WTMResponse.($_).Id
                         $exists= $WTMResponse2 | Where-Object id -eq $Id
                         if ($exists.count -eq 0) {
+								Start-Sleep -m 500
                                 $page="https://whattomine.com/coins/"+$WTMResponse.($_).Id+".json"
                                 try {$WTMResponse2 += Invoke-WebRequest $page -UseBasicParsing -timeoutsec 2 | ConvertFrom-Json  } catch {}
                                 }

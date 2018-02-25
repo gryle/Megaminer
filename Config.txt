@@ -150,7 +150,8 @@
 -- WTM profit is based on instant coin change rate, is recommended use pools with autoexchange on like MiningPoolHub and ZergPool
 
 
-@@WHATTOMINEPOOLORDER=MiningPoolHub,ZergPool
+--@@WHATTOMINEPOOLORDER=MiningPoolHub,ZergPool
+@@WHATTOMINEPOOLORDER=MyPools
 
 
 --Algorithms, define what algorithms can be mined for MM, for an Algo can be mined must exists: 1. A pool, 2. A miner, 3. This config.

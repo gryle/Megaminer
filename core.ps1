@@ -269,11 +269,11 @@ while ($true) {
             else { #NOT donation interval
                     $DonationInterval = $false
                     #get interval time based on pool kind (pps/ppls)
-                    $NextInterval=0
-                    Get_Pools -Querymode "Info" -PoolsFilterList $PoolsName -CoinFilterList $CoinsName -Location $Location -AlgoFilterList $Algorithm | foreach-object {
-                        $PItime=$config.("INTERVAL_"+$_.Rewardtype)
-                        if ([int]$PItime -gt $NextInterval) {$NextInterval= [int]$PItime}
-                        }
+                    $NextInterval=$config.("INTERVAL_PPLS")
+                    #Get_Pools -Querymode "Info" -PoolsFilterList $PoolsName -CoinFilterList $CoinsName -Location $Location -AlgoFilterList $Algorithm | foreach-object {
+                    #    $PItime=$config.("INTERVAL_"+$_.Rewardtype)
+                    #    if ([int]$PItime -gt $NextInterval) {$NextInterval= [int]$PItime}
+                    #    }
 
                     $Algorithm=$ParamAlgorithmBCK
                     $PoolsName=$ParamPoolsNameBCK

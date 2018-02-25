@@ -1292,6 +1292,7 @@ function get_algo_unified_name ([string]$Algo) {
             "sib" {$Result="x11gost"}
             "Blake (14r)" {$Result="Blake14r"} 
             "Blake (2b)" {$Result="Blake2b"} 
+			"Blake (2s)" {$Result="Blake2s"} 
             "decred" {$Result="Blake14r"}
             "Lyra2RE2" {$Result="lyra2v2"}
             "Lyra2REv2" {$Result="lyra2v2"}
@@ -1302,6 +1303,7 @@ function get_algo_unified_name ([string]$Algo) {
             "dagger" {$Result="Ethash"}
             "hashimoto" {$Result="Ethash"}
             "skunkhash" {$Result="skunk"}
+			"PHI1612" {$Result="phi"}
             }        
      $Result       
 
@@ -1571,10 +1573,12 @@ function get_WhattomineFactor ([string]$Algo) {
                                 "Neoscrypt"{$WTMFactor=1950000}
                                 "Lbry"{$WTMFactor=315000000}
                                 "Blake2b"{$WTMFactor=3450000000} 
+                                "Blake2s"{$WTMFactor=7500000000} 								
                                 "Blake14r"{$WTMFactor=5910000000}
                                 "Pascal"{$WTMFactor=2100000000}
                                 "skunk"{$WTMFactor=54000000}
                                 "nist5"{$WTMFactor=57000000}
+                                "phi"{$WTMFactor=24000000} 								
                         }
 
 
