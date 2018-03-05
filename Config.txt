@@ -23,9 +23,9 @@
 
 @@LOCALCURRENCY=EURO
 
--- Location of your rig: EUROPE/US/ASIA (by default "US" will be used for pools that don't require or support this setting)
+-- Location of your rig: EU/US/ASIA (by default "US" will be used for pools that don't require or support this setting)
 
-@@LOCATION=EUROPE
+@@LOCATION=EU
 
 -- Pool user name for non-anonymous pools such as SprNova, BlocksFactory, or MiningPoolHub
 -- You can ignore this setting if you're not using these types of pools
@@ -129,6 +129,7 @@
 @@POOLPROFITFACTOR_MININGPOOLHUB=0.8
 @@POOLPROFITFACTOR_ZPOOL=0.6
 @@POOLPROFITFACTOR_ZERGPOOL=0.5
+@@POOLPROFITFACTOR_BLAZEPOOL=0.7
 
 
 --Enabled or disable detailed log
@@ -157,9 +158,21 @@
 --Algorithms, define what algorithms can be mined for MM, for an Algo can be mined must exists: 1. A pool, 2. A miner, 3. This config.
 --If used, algorithm parameter from core.ps1 override this config.
 
-@@ALGORITHMS_NVIDIA=bitcore,blake2s,blakecoin,c11,cryptonight,Equihash,Ethash,,Ethash_Blake2b,Ethash_Blake14r,Ethash_Keccak,Ethash_blake2s,Ethash_pascal,Ethash_Lbry,groestl,hsr,jha,Keccak,keccakc,lbry,lyra2v2,lyra2z,Myriad-Groestl,Neoscrypt,nist5,pascal,phi,polytimos,sib,skein,skunk,timetravel,tribus,veltor,whirpool,x11evo,x11gost,x14,x16r,x17,xevan
-@@ALGORITHMS_AMD=bitcore,blake,blake2s,cryptonight,darkcoin-mod,equihash,Ethash,Ethash_Blake2b,Ethash_Blake14r,Ethash_Keccak,Ethash_blake2s,Ethash_pascal,Ethash_Lbry,Groestl,hsr,Keccak,lyra2v2,lyra2z,Myriad-groestl,neoscrypt,Pascal,phi,skein,tribus,vanilla,veltor,x11gost,xevan
+@@ALGORITHMS_NVIDIA=bitcore,blake2s,blakecoin,c11,cryptonight,Equihash,Ethash,Ethash_Blake2b,Ethash_Blake14r,Ethash_Keccak,Ethash_blake2s,Ethash_pascal,Ethash_Lbry,groestl,hsr,jha,Keccak,keccakc,lbry,lyra2v2,lyra2z,Myriad-Groestl,Neoscrypt,nist5,pascal,phi,polytimos,sib,skein,skunk,timetravel,tribus,veltor,whirpool,x11evo,x11gost,x14,x16r,x17,xevan,yescrypt
+@@ALGORITHMS_AMD=bitcore,blake,blake2s,cryptonight,darkcoin-mod,equihash,Ethash,Ethash_Blake2b,Ethash_Blake14r,Ethash_Keccak,Ethash_blake2s,Ethash_pascal,Ethash_Lbry,Groestl,hsr,Keccak,lyra2v2,lyra2z,Myriad-groestl,neoscrypt,Pascal,phi,skein,tribus,vanilla,veltor,x11gost,xevan,yescrypt
 @@ALGORITHMS_CPU=bitcore,blakecoin,cryptonight,hmq1725,jha,keccak,keccakc,lyra2v2,lyra2z,m7m,neoscrypt,nist5,phi,polytimos,timetravel,tribus,veltor
 
  
+--[optional]Port for megaminer api (http:\\localhost:port), set zero to disable api.
+
+@@APIPORT=0
+
+
+--[optional]Farm Monitor adresses (separated comma ip:apiport or lanname:apiport). This field indicates what rigs do you want monitorize in Farm Monitor,only needs to be filled in your monitoring machine
+--To run monitoring, fill this field and run start.bat
+
+--@@FARMRIGS=192.168.2.100:9999,192.168.2.200:9999,localhost:9999
+
+
+
 

@@ -216,7 +216,7 @@ function Kill_Process($Process) {
             { Writelog ("Process "+[string]$Process.Id+" not exists now") $LogFile $false    }
         
         if ((get-process |Where-Object id -eq $Process.Id) -ne $null) {
-            Stop-Process $Process.Id -force -wa SilentlyContinue -ea SilentlyContinue 
+            Stop-Process $Process.Id -force -wa SilentlyContinue -ea SilentlyContinue
             Writelog ("Killed Process"+[string]$Process.Id) $LogFile $false           
             }
         
@@ -238,32 +238,34 @@ function get_gpu_information ($Types) {
     #NVIDIA
         invoke-expression "./nvidia-smi.exe --query-gpu=gpu_name,utilization.gpu,utilization.memory,temperature.gpu,power.draw,power.limit,fan.speed,pstate,clocks.current.graphics,clocks.current.memory,power.max_limit,power.default_limit --format=csv,noheader"  | ForEach-Object {
 
-                $SMIresultSplit = $_ -split (",")   
+            $SMIresultSplit = $_ -split (",")  
+                
+                if ($SMIresultSplit.count -gt 10) { #less is error or not NVIDIA gpu present
 
-                $GpuGroup=($Types  | where-object type -eq 'NVIDIA' |where-object GpusArray -contains $GpuId).groupname
+                        $GpuGroup=($Types  | where-object type -eq 'NVIDIA' |where-object GpusArray -contains $GpuId).groupname
 
-                $Card =[pscustomObject]@{
-                            Type               ='NVIDIA'
-                            GpuId              = $GpuId
-                            GpuGroup          = $GpuGroup
-                            gpu_name           = $SMIresultSplit[0] 
-                            utilization_gpu    = if ($SMIresultSplit[1] -like "*Supported*") {$null} else {[int]($SMIresultSplit[1] -replace '%','')}
-                            utilization_memory = if ($SMIresultSplit[2] -like "*Supported*") {$null} else {[int]($SMIresultSplit[2] -replace '%','')} 
-                            temperature_gpu    = if ($SMIresultSplit[3] -like "*Supported*") {$null} else {[int]($SMIresultSplit[3] -replace '%','')} 
-                            power_draw         = if ($SMIresultSplit[4] -like "*Supported*") {$null} else {[int]($SMIresultSplit[4] -replace 'W','')} 
-                            power_limit        = if ($SMIresultSplit[5] -like "*Supported*") {$null} else {[int]($SMIresultSplit[5] -replace 'W','')} 
-                            pstate             = $SMIresultSplit[7]
-                            FanSpeed           = if ($SMIresultSplit[6] -like "*Supported*") {$null} else {[int]($SMIresultSplit[6] -replace '%','')} 
-                            ClockGpu           = if ($SMIresultSplit[8] -like "*Supported*") {$null} else {[int]($SMIresultSplit[8] -replace 'Mhz','')}
-                            ClockMem           = if ($SMIresultSplit[9] -like "*Supported*") {$null} else {[int]($SMIresultSplit[9] -replace 'Mhz','')}
-                            Power_MaxLimit     = if ($SMIresultSplit[10] -like "*Supported*") {$null} else { [int]($SMIresultSplit[10] -replace 'W','')}
-                            Power_DefaultLimit = if ($SMIresultSplit[11] -like "*Supported*") {$null} else {[int]($SMIresultSplit[11] -replace 'W','')} 
-                        }
-                        if ($Card.Power_DefaultLimit -gt 0) { $card |add-member Power_limit_percent ([math]::Floor(($Card.power_limit*100) / $Card.Power_DefaultLimit))}
+                        $Card =[pscustomObject]@{
+                                    Type               ='NVIDIA'
+                                    GpuId              = $GpuId
+                                    GpuGroup          = $GpuGroup
+                                    gpu_name           = $SMIresultSplit[0] 
+                                    utilization_gpu    = if ($SMIresultSplit[1] -like "*Supported*") {$null} else {[int]($SMIresultSplit[1] -replace '%','')}
+                                    utilization_memory = if ($SMIresultSplit[2] -like "*Supported*") {$null} else {[int]($SMIresultSplit[2] -replace '%','')} 
+                                    temperature_gpu    = if ($SMIresultSplit[3] -like "*Supported*") {$null} else {[int]($SMIresultSplit[3] -replace '%','')} 
+                                    power_draw         = if ($SMIresultSplit[4] -like "*Supported*") {$null} else {[int]($SMIresultSplit[4] -replace 'W','')} 
+                                    power_limit        = if ($SMIresultSplit[5] -like "*Supported*") {$null} else {[int]($SMIresultSplit[5] -replace 'W','')} 
+                                    pstate             = $SMIresultSplit[7]
+                                    FanSpeed           = if ($SMIresultSplit[6] -like "*Supported*") {$null} else {[int]($SMIresultSplit[6] -replace '%','')} 
+                                    ClockGpu           = if ($SMIresultSplit[8] -like "*Supported*") {$null} else {[int]($SMIresultSplit[8] -replace 'Mhz','')}
+                                    ClockMem           = if ($SMIresultSplit[9] -like "*Supported*") {$null} else {[int]($SMIresultSplit[9] -replace 'Mhz','')}
+                                    Power_MaxLimit     = if ($SMIresultSplit[10] -like "*Supported*") {$null} else { [int]($SMIresultSplit[10] -replace 'W','')}
+                                    Power_DefaultLimit = if ($SMIresultSplit[11] -like "*Supported*") {$null} else {[int]($SMIresultSplit[11] -replace 'W','')} 
+                                }
+                                if ($Card.Power_DefaultLimit -gt 0) { $card |add-member Power_limit_percent ([math]::Floor(($Card.power_limit*100) / $Card.Power_DefaultLimit))}
 
-                $cards+=$card        
-                $GpuId+=1
-
+                        $cards+=$card        
+                        $GpuId+=1
+                }
 
          }    
         
@@ -271,7 +273,6 @@ function get_gpu_information ($Types) {
     #AMD
         $AMDPlatform=[OpenCl.Platform]::GetPlatformIDs() | Where-Object vendor -like "*Advanced Micro Devices*"
         if ($AMDPlatform -ne $null) {
-
 
                   #ADL
 
@@ -299,9 +300,9 @@ function get_gpu_information ($Types) {
                                     power_limit_percent= 100+[int]$AdlResultSplit[7]
                                     Power_draw         = switch ($AdlResultSplit[8]){
                                                                     "Radeon RX 580 Series"  {[int](135 * ((100+[double]$AdlResultSplit[7])/100) * ([double]$AdlResultSplit[5]/100))} 
-                                                                    "Radeon RX 480 Series"  {[int](135 * ((100+[double]$AdlResultSplit[7])/100) * ([double]$AdlResultSplit[5]/100))} 
+                                                                    "Radeon (TM) RX 480 graphics"  {[int](135 * ((100+[double]$AdlResultSplit[7])/100) * ([double]$AdlResultSplit[5]/100))} 
                                                                     "Radeon RX 570 Series"  {[int](120 * ((100+[double]$AdlResultSplit[7])/100) * ([double]$AdlResultSplit[5]/100))} 
-                                                                    "Radeon RX 470 Series"  {[int](120 * ((100+[double]$AdlResultSplit[7])/100) * ([double]$AdlResultSplit[5]/100))} 
+                                                                    "Radeon (TM) RX 470 graphics"  {[int](120 * ((100+[double]$AdlResultSplit[7])/100) * ([double]$AdlResultSplit[5]/100))} 
                                                                     "Radeon Vega 56 Series" {[int](210 * ((100+[double]$AdlResultSplit[7])/100) * ([double]$AdlResultSplit[5]/100))} 
                                                                     "Radeon Vega 64 Series" {[int](230 * ((100+[double]$AdlResultSplit[7])/100) * ([double]$AdlResultSplit[5]/100))} 
                                                                     }
@@ -1287,7 +1288,7 @@ function set_WindowSize ([int]$Width,[int]$Height) {
 
 function get_algo_unified_name ([string]$Algo) {
 
-    $Result=$Algo
+
     switch ($Algo){
             "sib" {$Result="x11gost"}
             "Blake (14r)" {$Result="Blake14r"} 
@@ -1298,12 +1299,14 @@ function get_algo_unified_name ([string]$Algo) {
             "Lyra2REv2" {$Result="lyra2v2"}
             "sia" {$Result="Blake2b"}
             "myr-gr" {$Result="Myriad-Groestl"}
+            "Myr-Groestl" {$Result="Myriad-Groestl"}
             "myriadgroestl" {$Result="Myriad-Groestl"}
             "daggerhashimoto" {$Result="Ethash"}
             "dagger" {$Result="Ethash"}
             "hashimoto" {$Result="Ethash"}
             "skunkhash" {$Result="skunk"}
-			"PHI1612" {$Result="phi"}
+            "Phi1612" {$Result="phi"}
+            default {$Result=$Algo}
             }        
      $Result       
 
@@ -1316,7 +1319,7 @@ function get_algo_unified_name ([string]$Algo) {
                     
 function  get_coin_unified_name ([string]$Coin) {
 
-    $Result = $Coin
+    
     switch –wildcard  ($Coin){
             "Myriadcoin-*" {$Result="Myriad"}
             "Myriad-*" {$Result="Myriad"}
@@ -1324,6 +1327,10 @@ function  get_coin_unified_name ([string]$Coin) {
             "Digibyte-*" {$Result="Digibyte"}
             "Verge-*" {$Result="Verge"}
             "EthereumClassic" {$Result="Ethereum-Classic"}
+            "BitcoinGold" {$Result="Bitcoin-Gold"}
+            
+            default {$Result=$coin}
+
             }      
           
      $Result       
@@ -1499,19 +1506,43 @@ function Start_Downloader {
      )
 
 
-    try {
-        $Message="Downloading....$URI"
-        #Write-Host -BackgroundColor green -ForegroundColor Black  $Message
-        Writelog $Message $logfile $true
-        Expand_WebRequest $URI $ExtractionPath -ErrorAction Stop
-    }
-    catch {
-        $Message="Cannot download $($URI)"
-        Write-Host -BackgroundColor Yellow -ForegroundColor Black $Message
-        Writelog $Message $logfile
-    }
 
 
+
+     if (-not (Test-Path $Path)) {
+        try {
+    
+    
+            if ($URI -and (Split-Path $URI -Leaf) -eq (Split-Path $Path -Leaf)) {
+                New-Item (Split-Path $Path) -ItemType "Directory" | Out-Null
+                Invoke-WebRequest $URI -OutFile $Path -UseBasicParsing -ErrorAction Stop
+            }
+            else {
+                Clear-Host
+                $Message="Downloading....$($URI)"
+                Write-Host -BackgroundColor green -ForegroundColor Black  $Message
+                Writelog $Message $logfile
+                Expand_WebRequest $URI $ExtractionPath -ErrorAction Stop
+            }
+        }
+        catch {
+            
+            $Message="Cannot download $URI"
+            Write-Host -BackgroundColor Yellow -ForegroundColor Black $Message
+            Writelog $Message $logfile
+    
+            
+            if ($Path_Old) {
+                if (Test-Path (Split-Path $Path_New)) {(Split-Path $Path_New) | Remove-Item -Recurse -Force}
+                (Split-Path $Path_Old) | Copy-Item -Destination (Split-Path $Path_New) -Recurse -Force
+            }
+            else {
+                $Message="Cannot find $($Path) distributed at $($URI). "
+                Write-Host -BackgroundColor Yellow -ForegroundColor Black $Message
+                Writelog $Message $logfile
+                }
+        }
+    }
 
     
 }
@@ -1519,12 +1550,14 @@ function Start_Downloader {
 
 
 
+
+
 #************************************************************************************************************************************************************************************
 #************************************************************************************************************************************************************************************
 #************************************************************************************************************************************************************************************
 
 
-function clear_log{
+function clear_files{
 
     $Now = Get-Date
     $Days = "3"
@@ -1543,10 +1576,19 @@ function clear_log{
 
     $Files = Get-Childitem $TargetFolder -Include $Extension -Recurse 
     $Files |ForEach-Object {Remove-Item $_.fullname}
+
     
+    $TargetFolder = "."
+    $Extension = "*.tmp"
+
+    $Files = Get-Childitem $TargetFolder -Include $Extension -Recurse 
+    $Files |ForEach-Object {Remove-Item $_.fullname}
+
  
     
 
+                                "Blake2s"{$WTMFactor=7500000000} 								
+                                "phi"{$WTMFactor=24000000} 								
 }
 
 
@@ -1554,36 +1596,4 @@ function clear_log{
 #************************************************************************************************************************************************************************************
 #************************************************************************************************************************************************************************************
 
-
-
-function get_WhattomineFactor ([string]$Algo) {
-    
-   #WTM json is for 3xAMD 480 hashrate must adjust, 
-   # to check result with WTM set WTM on "Difficulty for revenue" to "current diff" and "and sort by "current profit" set your algo hashrate from profits screen, WTM "Rev. BTC" and MM BTC/Day must be the same
-            
-            switch ($Algo)
-                        {
-                                "Ethash"{$WTMFactor=84000000}
-                                "Groestl"{$WTMFactor=63900000}
-                                "Myriad-Groestl"{$WTMFactor=79380000}
-                                "X11Gost"{$WTMFactor=20100000}
-                                "Cryptonight"{$WTMFactor=2190}
-                                "equihash"{$WTMFactor=870}
-                                "lyra2v2"{$WTMFactor=14700000}
-                                "Neoscrypt"{$WTMFactor=1950000}
-                                "Lbry"{$WTMFactor=315000000}
-                                "Blake2b"{$WTMFactor=3450000000} 
-                                "Blake2s"{$WTMFactor=7500000000} 								
-                                "Blake14r"{$WTMFactor=5910000000}
-                                "Pascal"{$WTMFactor=2100000000}
-                                "skunk"{$WTMFactor=54000000}
-                                "nist5"{$WTMFactor=57000000}
-                                "phi"{$WTMFactor=24000000} 								
-                        }
-
-
-              
-         $WTMFactor       
-    
-    }
-    
+ 
