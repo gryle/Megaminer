@@ -130,7 +130,6 @@ if ($Querymode -eq "core"  -or $Querymode -eq "Menu"){
 
                 try {
                                 $WTMResponse2 = Invoke-WebRequest "https://whattomine.com/calculators.json" -UseBasicParsing -timeoutsec 10 | ConvertFrom-Json | Select-Object -ExpandProperty coins 
-								Start-Sleep -m 500
                         } 
                 catch { 
                       }

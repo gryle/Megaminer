@@ -303,7 +303,6 @@ while ($Quit -eq $false) {
                         }
 
                     $Algorithm=$ParamAlgorithmBCK
-
                     $PoolsName=$ParamPoolsNameBCK
                     $CoinsName=$ParamCoinsNameBCK
                     $MiningMode=$ParamMiningModeBCK

@@ -1587,8 +1587,6 @@ function clear_files{
  
     
 
-                                "Blake2s"{$WTMFactor=7500000000} 								
-                                "phi"{$WTMFactor=24000000} 								
 }
 
 
