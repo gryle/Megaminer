@@ -792,6 +792,7 @@ while ($Quit -eq $false) {
         Writelog $msg $LogFile $false
         }
 
+	$NeedBenchmark = $false
     #For each type, select most profitable miner, not benchmarked has priority, only new miner is lauched if new profit is greater than old by percenttoswitch
     #This section changes subminer 
     foreach ($Type in $Types) {
@@ -828,7 +829,7 @@ while ($Quit -eq $false) {
                     $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].StatsHistory.BestTimes++
                     }
             else 
-                {$NextInterval=$BenchmarkintervalTime}
+                {$NeedBenchmark = $true}
 
 
         Writelog ("$BestNowLogMsg is the best combination for gpu group, last was id "+[string]$BestLast.Idf+"-"+[string]$BestLast.Id) $LogFile $true            
@@ -930,11 +931,13 @@ while ($Quit -eq $false) {
 
     ErrorsToLog $LogFile
    
-    $RunningSubminers=($ActiveMiners.subminers | Where-Object Status -eq 'Running' |select-object Idf).Idf
-	foreach ($RunningSubminer in $RunningSubminers) { 
-		$PItime=$config.("INTERVAL_"+$ActiveMiners[$RunningSubminer].PoolRewardType)
-		WriteLog ("Interval for pool "+[string]$ActiveMiners[$RunningSubminer].PoolName+" is "+$PItime) $LogFile $False
-		if ([int]$PItime -lt $NextInterval) {$NextInterval= [int]$PItime}
+    if ($NeedBenchmark -eq $true) { $NextInterval=$BenchmarkintervalTime } else {
+		$RunningSubminers=($ActiveMiners.subminers | Where-Object Status -eq 'Running' |select-object Idf).Idf
+		foreach ($RunningSubminer in $RunningSubminers) { 
+			$PItime=$config.("INTERVAL_"+$ActiveMiners[$RunningSubminer].PoolRewardType)
+			WriteLog ("Interval for pool "+[string]$ActiveMiners[$RunningSubminer].PoolName+" is "+$PItime) $LogFile $False
+			if ([int]$PItime -lt $NextInterval) {$NextInterval= [int]$PItime}
+		}
 	}
 
     $FirstLoopExecution=$True   
