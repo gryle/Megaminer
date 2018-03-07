@@ -882,14 +882,6 @@ function Get_Live_HashRate {
                                                     }
                                     }
                     }
-
-            "PhoenixMiner" {
-                    $Request = Invoke_httpRequest $Server $Port "" 5
-                    if ($Request -ne "" -and $request -ne $null) {
-								$Data = $Request -split "\n" -match "Eth speed:*" -replace ".*Eth speed: (.*?) MH/s.*",'$1'
-                                $HashRate = ([decimal]$Data[-1] * 1000000)
-                                    }
-				}
          } #end switch
         
         $HashRates=@()
