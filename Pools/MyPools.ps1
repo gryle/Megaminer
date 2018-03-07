@@ -39,7 +39,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")) {
     $Pools += [pscustomobject]@{"coin" = "ZCASH"; "algo" = "Equihash"; "symbol" = "ZEC"; "server" = "eu1-zcash.flypool.org"; "port" = 3333; "fee" = 0.01; "User" = $CoinsWallets.get_item('ZEC') + ".#Workername#"; "location"="EUROPE"}
     $Pools += [pscustomobject]@{"coin" = "Verge"; "algo" = "blake2s"; "symbol" = "XVG"; "server" = "xvg.antminepool.com"; "port" = 9008; "fee" = 0.005; "User" = $CoinsWallets.get_item('XVG'); Pass = "c=XVG"; "location"="EUROPE"}
     #$Pools += [pscustomobject]@{"coin" = "Luxcoin"; "algo" = "phi"; "symbol" = "LUX"; "server" = "pool.bsod.pw"; "port" = 6667; "fee" = 0.009; "User" = $CoinsWallets.get_item('LUX'); Pass = "c=LUX"; "location"="EUROPE"}
-    $Pools += [pscustomobject]@{"coin" = "Luxcoin"; "algo" = "phi"; "symbol" = "LUX"; "server" = "eu1.altminer.net"; "port" = 11000; "fee" = 0.009; "User" = $CoinsWallets.get_item('LUX') + ".#Workername#"; Pass = "c=LUX"; "location"="EUROPE"}
+    #$Pools += [pscustomobject]@{"coin" = "Luxcoin"; "algo" = "phi"; "symbol" = "LUX"; "server" = "eu1.altminer.net"; "port" = 11000; "fee" = 0.009; "User" = $CoinsWallets.get_item('LUX') + ".#Workername#"; Pass = "c=LUX"; "location"="EUROPE"}
 
     $Pools |ForEach-Object {
         $Result += [PSCustomObject]@{
