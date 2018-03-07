@@ -348,6 +348,7 @@ function get_gpu_information ($Types) {
                             $counter++
                       }
 
+    
     $cards                                               
     }
 
@@ -481,6 +482,7 @@ Function Get_Mining_Types () {
                                                             Type = "NVIDIA"
                                                             Gpus = (get_comma_separated_string 0 $NumberNvidiaGPU)
                                                             Powerlimits="0"
+                                                           
                                                             }
                                                 }
 
@@ -490,6 +492,7 @@ Function Get_Mining_Types () {
                                                             Type = "AMD"
                                                             Gpus = (get_comma_separated_string 0 $NumberAmdGPU)
                                                             Powerlimits="0"
+                                                           
                                                             }
                                                         }
                                                         
@@ -514,6 +517,7 @@ Function Get_Mining_Types () {
                                         $_ | Add-Member GpusNsgMode ("-d "+$_.gpus -replace ',',' -d ')
                                         $_ | Add-Member GpuPlatform (Get_Gpu_Platform $_.Type)
                                         $_ | Add-Member GpusArray ($_.gpus -split ",")
+                                        $_ | Add-Member GpuCount ($_.gpus -split ",").count
                                         $Pl=@()
                                         ($_.PowerLimits -split ',') |foreach-object {$Pl+=[int]$_} 
                                         $_.PowerLimits = $Pl |Sort-Object -Descending
@@ -802,7 +806,16 @@ function Get_Live_HashRate {
                                     $HashRate_Dual = [double]$Data.result[4].Split(";")[0] * $Multiplier
                                     }
 
-            }
+                        }
+            "phoenix" {
+
+                        $Parameters = @{id = 1; jsonrpc = "2.0"; method = "miner_getstat1"} | ConvertTo-Json  -Compress
+                        $Request = Invoke_tcpRequest $Server $Port $Parameters 5
+                        if ($Request -ne "" -and $request -ne $null) {
+                            $Data = $Request | ConvertFrom-Json
+                            $HashRate =[int](($Data.result[2] -split ';')[0]) * 1000
+                            }
+                        }
 
             "ClaymoreV2" {
 
@@ -1594,4 +1607,29 @@ function clear_files{
 #************************************************************************************************************************************************************************************
 #************************************************************************************************************************************************************************************
 
- 
+function Check_GpuGroups_Config ($types) {
+
+
+    $cards=get_gpu_information $Types
+
+
+    $types | ForEach-Object {
+        
+        $detectedcards=@()
+        $detectedcards+=$Cards | Where-Object gpugroup -eq $_.GroupName
+        
+        if ($detectedcards.count -eq 0) {
+            writelog ("No gpus for group "+$type.GroupName+" was detected, activity based watchdog will be disabled for that group, this can happens if AMD beta blockchain drivers are installed or incorrect @@gpugroups config") $logfile $false
+            write-warning ("No gpus for group "+$type.GroupName+" was detected, activity based watchdog will be disabled for that group, this can happens if AMD beta blockchain drivers are installed or incorrect @@gpugroups config")
+            start-sleep 10
+        }
+        elseif ($detectedcards.count -ne $_.gpucount) {
+            writelog ("Mismatching gpus for group "+$type.GroupName+" was detected, check @@gpugroups config and gpulist.bat") $logfile $false
+            write-warning ("Mismatching gpus for group "+$type.GroupName+" was detected, check @@gpugroups config and gpulist.bat")
+            start-sleep 10
+        }
+
+    }
+   
+
+ }
