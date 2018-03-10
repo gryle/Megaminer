@@ -21,7 +21,7 @@ $ActiveOnManualMode    = $false
 $ActiveOnAutomaticMode = $true
 $ActiveOnAutomatic24hMode = $true
 $WalletMode = "MIXED"
-$RewardType ='PPS'
+$RewardType ='PPLS'
 $Result=@()
 
 
