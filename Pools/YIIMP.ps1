@@ -138,39 +138,37 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
                     $Yiimp_Algorithm = get_algo_unified_name $coin.algo
                     $Yiimp_coin =   get_coin_unified_name $coin.name
                     $Yiimp_Symbol=$_.name
-					
-					if ($CoinsWallets.get_item($Yiimp_Symbol) -ne $null) {
             
 
-						$Divisor = Get_Algo_Divisor $Yiimp_Algorithm
-						
-					
-						$Result+=[PSCustomObject]@{
-									Algorithm     = $Yiimp_Algorithm
-									Info          = $Yiimp_coin
-									Price         = [Double]$coin.estimate / $Divisor
-									Price24h      = [Double]$coin.estimate_last24h  / $Divisor
-									Protocol      = "stratum+tcp"
-									Host          = "yiimp.eu"
-									Port          = $coin.port
-									User          = $CoinsWallets.get_item($Yiimp_Symbol)
-									Pass          = "c=$Yiimp_symbol,ID=#WorkerName#"
-									Location      = 'US'
-									SSL           = $false
-									Symbol        = $Yiimp_Symbol
-									AbbName       = $AbbName
-									ActiveOnManualMode    = $ActiveOnManualMode
-									ActiveOnAutomaticMode = $ActiveOnAutomaticMode
-									PoolWorkers       = $coin.Workers
-									PoolHashRate  = $coin.HashRate
-									Blocks_24h    = $coin."24h_blocks"
-									WalletMode    = $WalletMode
-									Walletsymbol = $Yiimp_Symbol
-									PoolName = $Name
-									Fee = ($Request2.($coin.algo).Fees)/100
-									RewardType=$RewardType
-									}
-					}
+                    $Divisor = Get_Algo_Divisor $Yiimp_Algorithm
+                    
+                
+                    $Result+=[PSCustomObject]@{
+                                Algorithm     = $Yiimp_Algorithm
+                                Info          = $Yiimp_coin
+                                Price         = [Double]$coin.estimate / $Divisor
+                                Price24h      = [Double]$coin.estimate_last24h  / $Divisor
+                                Protocol      = "stratum+tcp"
+                                Host          = "yiimp.eu"
+                                Port          = $coin.port
+                                User          = $CoinsWallets.get_item($Yiimp_Symbol)
+                                Pass          = "c=$Yiimp_symbol,ID=#WorkerName#"
+                                Location      = 'US'
+                                SSL           = $false
+                                Symbol        = $Yiimp_Symbol
+                                AbbName       = $AbbName
+                                ActiveOnManualMode    = $ActiveOnManualMode
+                                ActiveOnAutomaticMode = $ActiveOnAutomaticMode
+                                PoolWorkers       = $coin.Workers
+                                PoolHashRate  = $coin.HashRate
+                                Blocks_24h    = $coin."24h_blocks"
+                                WalletMode    = $WalletMode
+                                Walletsymbol = $Yiimp_Symbol
+                                PoolName = $Name
+                                Fee = ($Request2.($coin.algo).Fees)/100
+                                RewardType=$RewardType
+                                }
+                        
                 
                 }
 
