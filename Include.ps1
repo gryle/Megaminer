@@ -94,8 +94,10 @@ function Get_ComputerStats {
 function ErrorsTolog ($LogFile){
     
     for ($i=0;$i -lt $error.count;$i++) {
-        $Msg="###### ERROR ##### "+[string]($error[$i])+' '+$error[$i].ScriptStackTrace
-        Writelog $msg $LogFile
+        if ($error[$i].InnerException.Paramname -ne "scopeId") {  # errors in debug
+            $Msg="###### ERROR ##### "+[string]($error[$i])+' '+$error[$i].ScriptStackTrace
+            Writelog $msg $LogFile
+        }
         
     }
     $error.clear()
@@ -208,20 +210,22 @@ function Kill_Process($Process) {
     try {
         if ((get-process |Where-Object id -eq $Process.Id) -ne $null) {
             $Process.CloseMainWindow() | Out-Null
-            Writelog ("Closed Process "+[string]$Process.Id) $LogFile $false        
             Start-Sleep 2
-            }
+        
+            for($i=1;$i -le 3;$i++)  {
+                if ((get-process |Where-Object id -eq $Process.Id) -ne $null) {Stop-Process $Process.Id -force -wa SilentlyContinue -ea SilentlyContinue}
+                }
+
+            if ((get-process |Where-Object id -eq $Process.Id) -eq $null) 
+            {Writelog ("Killed Process "+[string]$Process.Id) $LogFile $false}
+            else 
+            {Writelog ("Can´t be Killed Process"+[string]$Process.Id) $LogFile $false}
+
+        }
         else 
             { Writelog ("Process "+[string]$Process.Id+" not exists now") $LogFile $false }
 
-        for($i=1;$i -le 3;$i++)  {
-            if ((get-process |Where-Object id -eq $Process.Id) -ne $null) {Stop-Process $Process.Id -force -wa SilentlyContinue -ea SilentlyContinue}
-            }
 
-        if ((get-process |Where-Object id -eq $Process.Id) -eq $null) 
-           {Writelog ("Killed Process"+[string]$Process.Id) $LogFile $false}
-        else 
-           {Writelog ("Can´t be Killed Process"+[string]$Process.Id) $LogFile $false}
 
     } catch {}
 }
@@ -1628,3 +1632,7 @@ function Check_GpuGroups_Config ($types) {
    
 
  }
+
+
+
+ 

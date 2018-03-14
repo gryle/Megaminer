@@ -83,7 +83,7 @@
 
 @@LIVESTATSUPDATE=ENABLED
 
--- Screen to be shown at script start-up (WALLETS/CURRENT/HISTORY/PROFITS/STATS)
+-- Screen to be shown at Megaminer start-up (WALLETS/CURRENT/HISTORY/PROFITS/STATS)
 
 @@STARTSCREEN=PROFITS
 
@@ -106,15 +106,18 @@
 
 -- [OPTIONAL] GPU Groups/PowerLimits
 -- if you don´t set groups MM automatically makes 2 groups, one for all NVIDIA gpus and other for all AMD gpus
--- If you activate this option miners ports will be calculated dynamic mode, some software like ethmonitoring will not work due to miner dynamic port assignation
+-- If you activate this option and you have more than 1 group of same type (AMD,NVIDIA) miners ports will be calculated dynamically, some software like ethmonitoring will not work due to miner dynamic port assignation
 -- You can group your cards as you want. It's recommended to create a group for each card model in your rig, each group will be benchmarked and run separately (you can identify your GPU id's by launching GpuList.bat)
 -- Type must be NVIDIA or AMD, 
--- You can set Powerlimits (MM must run in administrator mode and UAC disabled or prompt appears) for each NVIDIA group, MM will benchmark all miners with maximum value, done this, when a miner is maximum profit candidate MM will benchmark other power limits of that miner to find best. (zero means MM will not change Power Limit) 
+
+-- Only for NVIDIA (zero means MM will not change Power Limit): 
+-- You can set Powerlimits (MM must run with admin rights and UAC disabled or prompt appears) for each group, MM will benchmark all miners with maximum value, done this, when a miner is maximum profit candidate MM will benchmark other power limits of that miner to find best. 
+
 -- Example1: @@GPUGROUPS=[{"GroupName" : "Card1","Type":"NVIDIA","Gpus":"0","PowerLimits":"0"},{"GroupName" : "Card2","Type":"NVIDIA","Gpus":"0","PowerLimits":"0"},{"GroupName" : "Card3","Type":"NVIDIA","Gpus":"0","PowerLimits":"0"}]
--- Example2: @@GPUGROUPS=[{"GroupName" : "1080","Type":"NVIDIA","Gpus":"0,1,2,3,4","PowerLimits":"100,90,80"} , {"GroupName" : "RX580","Type":"AMD","Gpus":"0,1","PowerLimits":"0"} ]
+-- Example2: @@GPUGROUPS=[{"GroupName" : "1080s","Type":"NVIDIA","Gpus":"0,1,2,3,4","PowerLimits":"100,90,80"} , {"GroupName" : "RX580s","Type":"AMD","Gpus":"0,1","PowerLimits":"0"} ]
 
 
---@@GPUGROUPS=[{"GroupName" : "1080","Type":"NVIDIA","Gpus":"0,1,2,3,4","PowerLimits":"110,100,90,80"} , {"GroupName" : "RX580","Type":"AMD","Gpus":"0,1","PowerLimits":"0"} ]
+--@@GPUGROUPS=[{"GroupName" : "1080s","Type":"NVIDIA","Gpus":"0,1,2,3,4","PowerLimits":"110,100,90,80"} , {"GroupName" : "RX580s","Type":"AMD","Gpus":"0,1","PowerLimits":"0"} ]
 
 
 
@@ -158,7 +161,7 @@
 --Algorithms, define what algorithms can be mined for MM, for an Algo can be mined must exists: 1. A pool, 2. A miner, 3. This config.
 --If used, algorithm parameter from core.ps1 override this config.
 
-@@ALGORITHMS_NVIDIA=bitcore,blake2s,blakecoin,c11,cryptonight,Equihash,Ethash,Ethash_Blake2b,Ethash_Blake14r,Ethash_Keccak,Ethash_blake2s,Ethash_pascal,Ethash_Lbry,groestl,hsr,jha,Keccak,keccakc,lbry,lyra2v2,lyra2z,Myriad-Groestl,Neoscrypt,nist5,pascal,phi,polytimos,sib,skein,skunk,timetravel,tribus,veltor,whirpool,x11evo,x11gost,x14,x16r,x17,xevan,yescrypt
+@@ALGORITHMS_NVIDIA=bitcore,blake2s,blakecoin,c11,cryptonight,Equihash,Ethash,Ethash_Blake2b,Ethash_Blake14r,Ethash_Keccak,Ethash_blake2s,Ethash_pascal,Ethash_Lbry,groestl,hsr,jha,keccakc,lyra2v2,lyra2z,Myriad-Groestl,Neoscrypt,nist5,pascal,phi,polytimos,sib,skein,skunk,timetravel,tribus,veltor,whirpool,x11evo,x11gost,x14,x16r,x17,xevan,yescrypt
 @@ALGORITHMS_AMD=bitcore,blake,blake2s,cryptonight,darkcoin-mod,equihash,Ethash,Ethash_Blake2b,Ethash_Blake14r,Ethash_Keccak,Ethash_blake2s,Ethash_pascal,Ethash_Lbry,Groestl,hsr,Keccak,lyra2v2,lyra2z,Myriad-groestl,neoscrypt,Pascal,phi,skein,tribus,vanilla,veltor,x11gost,xevan,yescrypt
 @@ALGORITHMS_CPU=bitcore,blakecoin,cryptonight,hmq1725,jha,keccak,keccakc,lyra2v2,lyra2z,m7m,neoscrypt,nist5,phi,polytimos,timetravel,tribus,veltor
 
@@ -168,19 +171,33 @@
 @@APIPORT=0
 
 
+--Force Dynamic Miners Port, if enabled Apiport field from miner file is ignored, you must enabled if you want to run more than one instance of MM with more than one same type gpu group.
+
+@@FORCEDYNAMICPORTS=DISABLED
+
+
 -- **********************************************************************************************************
--- ********************                                                                  ********************
 -- ********************   				FARM MONITOR OPTIONS                             ********************
--- ********************                                                                  ********************
+-- ********************(only need to set to use this app to monitorize all your rigs)    ********************
+-- ********************           (To run monitoring run start.bat / option 3)           ********************
 -- **********************************************************************************************************
 
+--Farm Monitor adresses, indicates what rigs do you want monitorize in Farm Monitor,only needs to be filled in your monitoring machine
+
+@@FARMRIGS=[{"IpOrLanName":"moneymachine", "ApiPort":"9999","Notifications":"true"},{"IpOrLanName":"filemon", "ApiPort":"9999","Notifications":"true"},{"IpOrLanName":"localhost", "ApiPort":"9999","Notifications":"true"}]
 
 
---[optional]Farm Monitor addresses (separated comma ip:apiport or lanname:apiport). This field indicates what rigs do you want monitorize in Farm Monitor,only needs to be filled in your monitoring machine
---To run monitoring, fill this field and run start.bat
+--Refresh interval in seconds
 
---@@FARMRIGS=192.168.2.100:9999,192.168.2.200:9999,localhost:9999
+@@REFRESHINTERVAL=15
 
 
+--[OPTIONAL] Notification Mail and SMTPServer config: 
+--Smtp server password will be asked and encrypted locally first time you run (to change password delete smtp.ctr), this file cant be shared between rigs because use local encryption/decryption.
+--GMAIL smtp will not work if you have activated two pass verification
+
+@@NOTIFICATIONMAIL=zzzzzzzzzzzzz@yyy.com
+
+@@SMTPSERVER={"url":"smtp-mail.outlook.com","port":587,"user":"xxxxxxxx@outlook.com","ssl":true}
 
 

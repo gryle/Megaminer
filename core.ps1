@@ -54,9 +54,19 @@ param(
 #$Groupnames=('rx580')
 
 
+$error.clear()
 $currentDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 
+#Start log file
+
+$logname=".\Logs\$(Get-Date -Format "yyyy-MM-dd_HH-mm-ss").txt"
+Start-Transcript $logname   #for start log msg
+Stop-Transcript
+$LogFile= [System.IO.StreamWriter]::new( $logname,$true )
+$LogFile.AutoFlush=$true
+
+clear_files
 
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
 
@@ -65,6 +75,7 @@ $ErrorActionPreference = "Continue"
 $config=get_config
 
 $Release="6.1"
+writelog ("Release $Release") $logfile $false
 
 if ($Groupnames -eq $null) {$Host.UI.RawUI.WindowTitle = "MegaMiner"} else {$Host.UI.RawUI.WindowTitle = "MM-" + ($Groupnames -join "/")}
 $env:CUDA_DEVICE_ORDER = 'PCI_BUS_ID' #This align cuda id with nvidia-smi order
@@ -82,19 +93,10 @@ Get-ChildItem . -Recurse | Unblock-File
     if ($DefenderExclusions.value -notcontains (Convert-Path .)) {Start-Process powershell -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath '$(Convert-Path .)'"}
 
 
-#Start log file
-    clear_files
-    $logname=".\Logs\$(Get-Date -Format "yyyy-MM-dd_HH-mm-ss").txt"
-    Start-Transcript $logname   #for start log msg
-    Stop-Transcript
-    $LogFile= [System.IO.StreamWriter]::new( $logname,$true )
-    $LogFile.AutoFlush=$true
-
-    writelog ("Release $Release") $logfile $false
 
 
 $ActiveMiners = @()
-$Activeminers=@()
+$Activeminers = @()
 $ShowBestMinersOnly=$true
 $FirstTotalExecution =$true
 $StartTime=get-date
@@ -209,7 +211,6 @@ if ($config.ApiPort -gt 0) {
 
         
     }
-
 
 
     $Quit=$false        
@@ -387,16 +388,26 @@ while ($Quit -eq $false) {
     #Load information about the Miner asociated to each Coin-Algo-Miner
 
     $Miners= @()
+    
+    $MinersFolderContent=(Get-ChildItem "Miners" | Where-Object extension -eq '.json')
 
-    foreach ($MinerFile in (Get-ChildItem "Miners" | Where-Object extension -eq '.json'))  
+    Writelog ("Files in miner folder: "+ [string]($MinersFolderContent.count)) $LogFile $false
+
+    Writelog ("Number of gpu groups: "+ $types.count) $LogFile $false 
+     
+    foreach ($MinerFile in $MinersFolderContent)  
         {
             try { $Miner =$MinerFile | Get-Content | ConvertFrom-Json } 
             catch {Writelog "-------BAD FORMED JSON: $MinerFile" $LogFile $true;Exit}
-              
-            ForEach ( $TypeGroup in $types) { #generate a line for each gpu group that has algorithm as valid
-                
-                if  ($Miner.Types -notcontains $TypeGroup.type) {continue} #check group and miner types are the same
 
+            ForEach ($TypeGroup in $types) { #generate a line for each gpu group that has algorithm as valid
+                
+                if  ($Miner.Types -notcontains $TypeGroup.type) {
+                    if ($DetailedLog) {Writelog ([string]$MinerFile.pschildname+" is NOT valid for "+ $TypeGroup.groupname+"...ignoring") $LogFile $false }
+                        continue
+                    } #check group and miner types are the same
+                else 
+                    { if ($DetailedLog) {Writelog ([string]$MinerFile.pschildname+" is valid for "+ $TypeGroup.groupname) $LogFile $false }}
 
                 foreach ($Algo in $Miner.Algorithms)
                         {
@@ -602,7 +613,7 @@ while ($Quit -eq $false) {
 														PoolRewardType=$Pool.RewardType
                                                         PoolWorkers = $Pool.PoolWorkers
                                                         PoolWorkersDual = $PoolDual.PoolWorkers
-                                                        Port = if (($Types |Where-object type -eq $TypeGroup.type).count -le 1 -and $DelayCloseMiners -eq 0) {$miner.ApiPort} else {$null}
+                                                        Port = if (($Types |Where-object type -eq $TypeGroup.type).count -le 1 -and $DelayCloseMiners -eq 0 -and $config.ForceDynamicPorts -ne "Enabled" ) {$miner.ApiPort} else {$null}
                                                         PrelaunchCommand = $Miner.PrelaunchCommand
                                                         Subminers = $Subminers
                                                         Symbol = $Pool.Symbol
@@ -830,20 +841,23 @@ while ($Quit -eq $false) {
                 {$NeedBenchmark = $true}
 
 
-        Writelog ("$BestNowLogMsg is the best combination for gpu group, last was id "+[string]$BestLast.Idf+"-"+[string]$BestLast.Id) $LogFile $true            
+        Writelog ("$BestNowLogMsg is the best combination for gpu group, last was $BestLastLogMsg") $LogFile $true            
         
         
         if ($BestLast.IdF -ne $BestNow.IdF -or  $BestLast.Id -ne $BestNow.Id -or $BestLast.Status -eq 'PendingCancellation' -or $BestLast.Status -eq 'Cancelled') { #something changes or some miner error
 
         if ($BestLast.IdF -eq $BestNow.IdF -and  $BestLast.Id -ne $BestNow.Id) {              #Must launch other subminer
-                            if ($ActiveMiners[$BestNow.IdF].GpuGroup.Type='NVIDIA' -and $BestNow.PowerLimit -gt 0) {set_Nvidia_Powerlimit $BestNow.PowerLimit $ActiveMiners[$BestNow.IdF].GpuGroup.gpus}
-                            if ($ActiveMiners[$BestNow.IdF].GpuGroup.Type='AMD'-and $BestNow.PowerLimit -gt 0){}
+                            if ($ActiveMiners[$BestNow.IdF].GpuGroup.Type -eq 'NVIDIA' -and $BestNow.PowerLimit -gt 0) {set_Nvidia_Powerlimit $BestNow.PowerLimit $ActiveMiners[$BestNow.IdF].GpuGroup.gpus}
+                            if ($ActiveMiners[$BestNow.IdF].GpuGroup.Type -eq 'AMD'-and $BestNow.PowerLimit -gt 0){}
                             $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].best=$true
                             $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].Status= "Running"
                             $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].Stats.LastTimeActive = get-date
                             $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].StatsHistory.LastTimeActive = get-date
                             $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].Stats.StatsTime  = get-date
+                            $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].stats.ActivatedTimes++
+                            $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].statsHistory.ActivatedTimes++
                             $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].TimeSinceStartInterval = [TimeSpan]0
+
                             $ActiveMiners[$BestLast.IdF].Subminers[$BestLast.Id].best=$false
                             Switch ($BestLast.Status) {
                                     "Running"{$ActiveMiners[$BestLast.IdF].Subminers[$BestLast.Id].Status="Idle"}
@@ -851,7 +865,7 @@ while ($Quit -eq $false) {
                                     "Cancelled"{$ActiveMiners[$BestLast.IdF].Subminers[$BestLast.Id].Status="Cancelled"}
                                      }
 
-                            Writelog ("$BestNowLogMsg - Marked as running, changed Power Limit from "+$BestLast.PowerLimit) $LogFile $true           
+                            Writelog ("$BestNowLogMsg - Marked as best, changed Power Limit from "+$BestLast.PowerLimit) $LogFile $true           
 
                         }
                 elseif ($ProfitNow -gt ($ProfitLast *(1+($PercentToSwitch2/100))) -or $BestNow.NeedBenchmark -or $BestLast.Status -eq 'PendingCancellation'  -or $BestLast.Status -eq 'Cancelled' -or $BestLast -eq $null) { #Must launch other miner and stop actual
@@ -1074,7 +1088,7 @@ while ($Quit -eq $false) {
                             $_.Stats.FailedTimes++
                             $_.StatsHistory.FailedTimes++
                             writelog ("Detected miner error "+$ActiveMiners[$_.IdF].name+"/"+$ActiveMiners[$_.IdF].Algorithm+" (id "+$_.IdF+'-'+$_.Id+") --> "+$ActiveMiners[$_.IdF].Path+" "+$ActiveMiners[$_.IdF].Arguments) $logfile $false
-                            writelog ([string]$ActiveMiners[$_.IdF].Process+','+[string]$ActiveMiners[$_.IdF].Process.HasExited+','+$GpuActivityAverage+','+$TimeSinceStartInterval) $logfile $false
+                            #writelog ([string]$ActiveMiners[$_.IdF].Process+','+[string]$ActiveMiners[$_.IdF].Process.HasExited+','+$GpuActivityAverage+','+$TimeSinceStartInterval) $logfile $false
                         }
                     
 
