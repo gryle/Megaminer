@@ -28,10 +28,12 @@ $Host.UI.RawUI.WindowTitle = "MM Farm Monitor"
 
 $FarmRigs | ForEach-Object {
         $_ | add-member LastContent $null
+        $_ | add-member State $null
         $_ | add-member LastState $null
-        $_ | add-member PreviousState $null
         $_ | add-member LastTime $null
-        $_ | add-member ChangeStateTime $null
+        $_ | add-member ChangeStateTime (get-date) 
+        $_ | add-member PendingNotify $false
+        $_ | add-member Workername ""
         }
 
   while ($true)  {
@@ -40,14 +42,21 @@ $FarmRigs | ForEach-Object {
            ForEach ($rig in $FarmRigs) {
                         $uri="http://"+$rig.IpOrLanName+':'+$rig.ApiPort
                         $rig.LastTime=get-date
-                        if ($rig.PreviousState -ne $rig.LastState) {$rig.PreviousState=$rig.LastState;$rig.ChangeStateTime=get-date }
+                        if ($rig.LastState -ne $rig.State -and $rig.LastState -ne $null) {
+                                $rig.ChangeStateTime=get-date
+                                if ($rig.PendingNotify) 
+                                    {$rig.PendingNotify=$false} #state changes before last change was notified, must anulate notify
+                                else 
+                                    {$rig.PendingNotify=$true}
+                                }
+                        $rig.LastState=$rig.State
                         try {
-                            $Request = Invoke-restmethod $uri -timeoutsec 5 -UseDefaultCredential 
-                            if ($request.ActiveMiners -ne $null) {$rig.LastState="OK"} else {$rig.LastState="ERROR"}
+                            $Request = Invoke-restmethod $uri -timeoutsec 10 -UseDefaultCredential 
+                            if ($request.ActiveMiners -ne $null) {$rig.State="OK"} else {$rig.State="ERROR"}
                             $rig.LastContent = $Request 
                              } 
                         catch { 
-                            $rig.LastState="ERROR"
+                            $rig.State="ERROR"
                             }
                 }         
             try {set_WindowSize 185 60} catch {}
@@ -62,9 +71,13 @@ $FarmRigs | ForEach-Object {
 
                         if ($_.ChangeStateTime -ne $null) {$ChangeStateElapsed=((get-date) - [datetime]$_.ChangeStateTime).minutes} else {$ChangeStateElapsed=0} #calculates time since state change
 
-                        if ($_.LastState -eq "OK") {
+                        if ($_.State -eq "OK") {
 
                             "Mode: "+$_.LastContent.params.MiningMode+"       Pool/s: " + ($_.LastContent.params.pools -join ",")+"         Release: "+$_.LastContent.Release |out-host
+
+
+                            $_.Workername=$_.LastContent.config.workername
+
 
                             $_.LastContent.Activeminers | Format-Table (
                                     @{Label = "GroupName"; Expression = {$_.GroupName}},   
@@ -88,19 +101,19 @@ $FarmRigs | ForEach-Object {
                         "" | out-host
                         }
                      
-                    if ($_.PreviousState -ne $_.LastState -and $_.PreviousState -ne $null) { #change state
+                    if ($ChangeStateElapsed -gt 4) { #change state 5 minutes ago
                     #if ($true) {
 
-                       
-
-                        if  ($config.NotificationMail -ne $null -and  $config.NotificationMail -ne "" -and $_.Notifications -and $ChangeStateElapsed -gt 2 ) { #mail notification enabled
+                        if  ($config.NotificationMail -ne $null -and  $config.NotificationMail -ne "" -and $_.Notifications -and $_.PendingNotify ) { #mail notification enabled
                   
-                                    if ($_.LastState -eq 'OK') {  $mailmsg=$_.IpOrLanName+"("+$_.LastContent.config.workername+") is ONLINE "  }
-                                    else {$mailmsg=$_.IpOrLanName+" is OFFLINE" }
-                                
+                                    $_.PendingNotify=$false
+
+                                    $mailmsg=$_.IpOrLanName+"("+$_.workername+") is "
+
+                                    if ($_.State -eq 'OK') {$mailmsg+="ONLINE"} else {$mailmsg+="OFFLINE"}
+                                        
                                     $Creds  = New-Object PSCredential $smtp.user,$EncPass
                                     
-
                                     if ($smtp.ssl) {
                                             Send-MailMessage -usessl -To $config.NotificationMail -From $smtp.user -Subject  $mailmsg -smtp ($smtp.url) -Port ($smtp.port) -Credential $Creds
                                     }
