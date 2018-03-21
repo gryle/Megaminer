@@ -836,7 +836,7 @@ while ($Quit -eq $false) {
                 }
 
         #look for best for next round
-            $Candidates = $ActiveMiners | Where-Object {$_.GpuGroup.Id -eq $Type.Id -and $_.IsValid}
+            $Candidates = $ActiveMiners | Where-Object {$_.GpuGroup.Id -eq $Type.Id -and $_.IsValid -and $_.Username -ne ""}
             $BestNow = $Candidates.Subminers |where-object Status -ne 'Cancelled' | Sort-Object -Descending {if ($_.NeedBenchmark) {1} else {0}}, Profits,{$Activeminers[$_.IdF].Algorithm},{$Activeminers[$_.IdF].PoolPrice},PowerLimit | Select-Object -First 1 
             if ($BestNow -eq $null) {Writelog ("No detected any valid candidate for gpu group "+$Type.groupname) $LogFile $true  ; break  }
             $BestNowLogMsg=$ActiveMiners[$BestNow.IdF].name+"/"+$ActiveMiners[$BestNow.IdF].Algorithms+'/'+$ActiveMiners[$BestNow.IdF].Coin+" with Power Limit "+[string]$BestNow.PowerLimit+" (id "+[string]$BestNow.IdF+"-"+[string]$BestNow.Id+") for group "+$Type.groupname
@@ -990,10 +990,8 @@ while ($Quit -eq $false) {
         {
 
         
-
-        if  ($SwitchLoop -gt 10) {$SwitchLoop=0} #reduces 10-1 ratio of execution 
         $SwitchLoop++ 
-        
+        if  ($SwitchLoop -gt 10) {$SwitchLoop=0} #reduces 10-1 ratio of execution 
 
         $ExitLoop = $false
         
@@ -1202,8 +1200,11 @@ while ($Quit -eq $false) {
                     Miner        = $ActiveMiners[$_.IdF].Name 
                     Power        = [string]$_.PowerLive+'W'
                     EfficiencyH  = if ($ActiveMiners[$_.IdF].AlgorithmDual -eq $null -and $_.PowerLive -gt 0) {(ConvertTo_Hash  ($_.SpeedLive/$_.PowerLive))+'/W'} else {$null} 
-                    EfficiencyW  = if ($ActiveMiners[$_.IdF].AlgorithmDual -eq $null -and $_.PowerLive -gt 0) {($_.ProfitsLive/$_.PowerLive).tostring("n4")+" $LocalSymbol/W"} else {$null} 
+                    EfficiencyW  = if ($_.PowerLive -gt 0) {($_.ProfitsLive/$_.PowerLive).tostring("n4")+" $LocalSymbol/W"} else {$null} 
                     Pool         = if ($ActiveMiners[$_.IdF].AlgorithmDual -eq $null)  {$ActiveMiners[$_.IdF].PoolAbbName} else {$ActiveMiners[$_.IdF].PoolAbbName+'|'+$ActiveMiners[$_.IdF].PoolAbbNameDual}
+                    PoolSpeed    = if ($_.AlgorithmDual -eq $null) {(ConvertTo_Hash  ($ActiveMiners[$_.IdF].PoolHashrate))+'/s'} else {(ConvertTo_Hash  ($ActiveMiners[$_.IdF].PoolHashrate))+'/s|'+(ConvertTo_Hash ($ActiveMiners[$_.IdF].PoolHashrateDual))+'/s'} 
+                    Workers      = $ActiveMiners[$_.IdF].PoolWorkers
+                    Location     = $ActiveMiners[$_.IdF].Location
                   
                }
             }   
@@ -1222,7 +1223,10 @@ while ($Quit -eq $false) {
             @{Label = "Power"; Expression = {$_.Power} ; Align = 'right'},   
             @{Label = "Efficiency"; Expression = {$_.EfficiencyH} ; Align = 'right'},   
             @{Label = "Efficiency"; Expression = {$_.EfficiencyW}  ; Align = 'right'},
-            @{Label = "Pool"; Expression = {$_.Pool}}
+            @{Label = "Pool"; Expression = {$_.Pool} ; Align = 'right'},
+            @{Label = "PoolSpeed"; Expression = {$_.PoolSpeed} ; Align = 'right'},
+            @{Label = "Workers"; Expression = {$_.Workers} ; Align = 'right'},
+            @{Label = "Loc."; Expression = {$_.Location} ; Align = 'right'}
         ) | out-host
         
 
@@ -1316,6 +1320,7 @@ while ($Quit -eq $false) {
                         @{Label = "Algorithm"; Expression = {if ($_.AlgorithmDual -eq $null) {$_.Algorithm+$_.AlgoLabel} else  {$_.Algorithm+$_.AlgoLabel+ '|' + $_.AlgorithmDual}}},   
                         @{Label = "Coin"; Expression = {if ($_.AlgorithmDual -eq $null) {$_.Coin} else  {($_.Symbol)+ '|' + ($_.SymbolDual)}}},   
                         @{Label = "Miner"; Expression = {$_.Name}}, 
+                        #@{Label = "Miner"; Expression = {$color=93;$e = [char]27;"$e[${color}m$($_.Name)${e}[0m"}}, 
                         @{Label = "PowLmt"; Expression ={if ($_.Subminer.PowerLimit -gt 0) {$_.Subminer.PowerLimit}};align='right'}, 
                         @{Label = "StatsSpeed"; Expression = {if  ($_.AlgorithmDual -eq $null) {(ConvertTo_Hash  ($_.Subminer.hashrate))+'/s'} else {(ConvertTo_Hash  ($_.Subminer.hashrate))+'/s|'+(ConvertTo_Hash ($_.Subminer.hashratedual))+'/s'}}; Align = 'right'}, 
                         @{Label = "PowerAvg"; Expression = {if ($_.Subminer.NeedBenchmark) {"Benchmarking"} else {$_.Subminer.PowerAvg.tostring("n0")}}; Align = 'right'}, 
@@ -1325,7 +1330,7 @@ while ($Quit -eq $false) {
                         @{Label = "Profit/Day"; Expression = {if ($_.Subminer.NeedBenchmark) {"Benchmarking"} else {($_.Subminer.Profits).tostring("n2")+$LocalSymbol}}; Align = 'right'}, 
                         @{Label = "PoolFee"; Expression = {if ($_.PoolFee -ne $null) {"{0:P2}" -f $_.PoolFee}}; Align = 'right'},
                         @{Label = "MinerFee"; Expression = {if ($_.MinerFee -ne $null) {"{0:P2}" -f $_.MinerFee}}; Align = 'right'},
-                        @{Label = "Loc."; Expression = {$_.Location}} ,
+                        @{Label = "Loc."; Expression = {if ($_.Username -ne "") {$_.Location} else {$color=93;$e = [char]27;"$e[${color}m$("NO WALLET")${e}[0m"}}} ,
                         @{Label = "Pool"; Expression = {if ($_.AlgorithmDual -eq $null)  {$_.PoolAbbName} else {$_.PoolAbbName+'|'+$_.PoolAbbNameDual}}  }
 
                     )  -GroupBy GroupName |  Out-Host
@@ -1364,7 +1369,7 @@ while ($Quit -eq $false) {
 
                             $WalletsToCheck=@()
                             
-                            $Pools  | where-object WalletMode -eq 'WALLET' | Select-Object PoolName,AbbName,User,WalletMode,WalletSymbol -unique  | ForEach-Object {
+                            $Pools  | where-object WalletMode -eq 'WALLET' | where-object user -ne $null | Select-Object PoolName,AbbName,User,WalletMode,WalletSymbol -unique  | ForEach-Object {
                                     $WalletsToCheck += [pscustomObject]@{
                                                 PoolName   = $_.PoolName
                                                 AbbName = $_.AbbName

@@ -38,14 +38,14 @@ $SelectedOption=""
 Clear-Host
 
 Print_Horizontal_line ""
-Print_Horizontal_line "SELECT MODE TO MINE"
+Print_Horizontal_line "SELECT OPTION"
 Print_Horizontal_line ""
 
 
 $Modes=@()
-$Modes += [pscustomobject]@{"Option"=0;"Mode"='AUTOMATIC';"Explanation"='Not necesary choose coin to mine, program choose more profitable coin based on pool´s current statistics'}
-$Modes += [pscustomobject]@{"Option"=1;"Mode"='AUTOMATIC24h';"Explanation"='Same as Automatic mode but based on pools/WTM reported last 24h profit'}
-$Modes += [pscustomobject]@{"Option"=2;"Mode"='MANUAL';"Explanation"='You select coin to mine'}
+$Modes += [pscustomobject]@{"Option"=0;"Mode"='MINE AUTOMATIC';"Explanation"='Not necesary choose coin to mine, program choose more profitable coin based on pool´s current statistics'}
+$Modes += [pscustomobject]@{"Option"=1;"Mode"='MINE AUTOMATIC24h';"Explanation"='Same as Automatic mode but based on pools/WTM reported last 24h profit'}
+$Modes += [pscustomobject]@{"Option"=2;"Mode"='MINE MANUAL';"Explanation"='You select coin to mine'}
 
 if ($FarmRigs -ne $null -and $FarmRigs -ne "" )  {$Modes += [pscustomobject]@{"Option"=3;"Mode"='FARM MONITORING';"Explanation"='I only want to see my rigs state'}}
 
@@ -65,9 +65,9 @@ if ($MiningMode -ne "FARM MONITORING") {
                     #-----------------Ask user for pool/s to use, if a pool is indicated in parameters no prompt
 
                         switch ($MiningMode) {
-                                "Automatic" {$Pools=Get_Pools -Querymode "Info" | Where-Object ActiveOnAutomaticMode -eq $true | sort name }
-                                "Automatic24h" {$Pools=Get_Pools -Querymode "Info" | Where-Object ActiveOnAutomatic24hMode -eq $true | sort name }
-                                "Manual" {$Pools=Get_Pools -Querymode "Info" | Where-Object ActiveOnManualMode -eq $true | sort name }
+                                "MINE Automatic" {$MiningMode='AUTOMATIC';$Pools=Get_Pools -Querymode "Info" | Where-Object ActiveOnAutomaticMode -eq $true | Sort-Object name }
+                                "MINE Automatic24h" {$MiningMode='AUTOMATIC24H';$Pools=Get_Pools -Querymode "Info" | Where-Object ActiveOnAutomatic24hMode -eq $true | Sort-Object name }
+                                "MINE Manual" {$MiningMode='MANUAL';$Pools=Get_Pools -Querymode "Info" | Where-Object ActiveOnManualMode -eq $true | Sort-Object name }
                                 }
 
                     $Pools | Add-Member Option "0"
