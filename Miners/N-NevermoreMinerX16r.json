@@ -1,0 +1,16 @@
+{
+"Path" : ".\\Bin\\NVIDIA-NevermoreMinerX16R\\nevermore-win64\\ccminer.exe",
+"ExtractionPath" : ".\\Bin\\NVIDIA-NevermoreMinerX16R\\",
+"Uri" : "https://github.com/brian112358/nevermore-miner/releases/download/v0.1-alpha/nevermore-v0.1-alpha-win64-fixed.zip",
+"Types" : ["NVIDIA"],
+"Arguments" : "-o #PROTOCOL#://#SERVER#:#PORT# -u #LOGIN# -p #PASSWORD# -R 10 -r 4 -b #APIPORT# -d #DEVICES# #ALGORITHMPARAMETERS# ",
+"API" : "Ccminer",
+"Dualmining":false,
+"APIPort" : 4068,
+"PrelaunchCommand":"",
+"Algorithms": [
+                {"x16r":"-a x16r  "}
+                
+              ]
+}
+
