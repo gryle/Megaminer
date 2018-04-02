@@ -1,7 +1,7 @@
 {
-"Path" : ".\\Bin\\NVIDIA-SuprMiner\\suprminer-1.2\\ccminer.exe",
+"Path" : ".\\Bin\\NVIDIA-SuprMiner\\suprminer-1.5\\ccminer.exe",
 "ExtractionPath" : ".\\Bin\\NVIDIA-SuprMiner\\",
-"Uri" : "https://github.com/ocminer/suprminer/releases/download/1.2/suprminer-1.2.7z",
+"Uri" : "https://github.com/ocminer/suprminer/releases/download/1.5/suprminer-1.5.7z",
 "Types" : ["NVIDIA"],
 "Arguments" : "-o #PROTOCOL#://#SERVER#:#PORT# -u #LOGIN# -p #PASSWORD# -b #APIPORT# -d #DEVICES# #ALGORITHMPARAMETERS# ",
 "API" : "Ccminer",
