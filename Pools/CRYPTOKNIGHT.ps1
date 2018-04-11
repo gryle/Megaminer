@@ -109,8 +109,8 @@ if ($Querymode -eq "SPEED")    {
 if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 
         $Pools=@()
-        $Pools +=[pscustomobject]@{"symbol"="XHV"; "algo"="Haven";"port"=5532;"coin"="HAVEN";"location"="US";"server"="haven.ingest.cryptoknight.cc"; "fee"=0.0}
-        $Pools +=[pscustomobject]@{"symbol"="XTL"; "algo"="Stellite";"port"=16222;"coin"="STELLITE";"location"="US";"server"="stellite.ingest.cryptoknight.cc"; "fee"=0.0}
+        $Pools +=[pscustomobject]@{"symbol"="XHV"; "algo"="Haven";"port"=5531;"coin"="HAVEN";"location"="US";"server"="haven.ingest.cryptoknight.cc"; "fee"=0.0}
+        $Pools +=[pscustomobject]@{"symbol"="XTL"; "algo"="Stellite";"port"=16221;"coin"="STELLITE";"location"="US";"server"="stellite.ingest.cryptoknight.cc"; "fee"=0.0}
 
      
 
