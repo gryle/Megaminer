@@ -14,8 +14,7 @@
 "Algorithms": [
                 {"Cryptonight":"--use-nicehash --currency cryptonight"},
                 {"Stellite":"--currency stellite"},
-                {"Graft":"--currency graft"},
-                {"Monero7":"--currency monero7"}
+                {"CryptonightV7":"--use-nicehash --currency monero7"}
               ]
 
 }
