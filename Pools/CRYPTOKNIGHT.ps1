@@ -47,6 +47,8 @@ if ($Querymode -eq "SPEED")    {
 		switch ($Info.symbol.tolower()){
             "xhv"{$http="https://cryptoknight.cc/rpc/haven/stats_address?address="+$Info.user}
             "xtl"{$http="https://cryptoknight.cc/rpc/stellite/stats_address?address="+$Info.user}
+            "ipbc"{$http="https://cryptoknight.cc/rpc/ipbc/stats_address?address="+$Info.user}
+            "grft"{$http="https://cryptoknight.cc/rpc/graft/stats_address?address="+$Info.user}
         }
 
         $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json 
@@ -86,6 +88,8 @@ if ($Querymode -eq "SPEED")    {
 									switch ($Info.symbol.tolower()){
 										"xhv"{$http="https://cryptoknight.cc/rpc/haven/stats_address?address="+$Info.user}
 										"xtl"{$http="https://cryptoknight.cc/rpc/stellite/stats_address?address="+$Info.user}
+										"ipbc"{$http="https://cryptoknight.cc/rpc/ipbc/stats_address?address="+$Info.user}
+										"grft"{$http="https://cryptoknight.cc/rpc/graft/stats_address?address="+$Info.user}
 									}
                                     $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json 
                                 }
@@ -108,35 +112,40 @@ if ($Querymode -eq "SPEED")    {
 
 if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 
-        $Pools=@()
-        $Pools +=[pscustomobject]@{"symbol"="XHV"; "algo"="Haven";"port"=5532;"coin"="HAVEN";"location"="US";"server"="haven.ingest.cryptoknight.cc"; "fee"=0.0}
-        $Pools +=[pscustomobject]@{"symbol"="XTL"; "algo"="Stellite";"port"=16222;"coin"="STELLITE";"location"="US";"server"="stellite.ingest.cryptoknight.cc"; "fee"=0.0}
+        $CRYPTOKNIGHT_Pools=@()
+        $CRYPTOKNIGHT_Pools +=[pscustomobject]@{"symbol"="XHV"; "algo"="Haven";"port"=5531;"coin"="HAVEN";"location"="US";"server"="haven.ingest.cryptoknight.cc"; "fee"=0.0}
+        $CRYPTOKNIGHT_Pools +=[pscustomobject]@{"symbol"="XTL"; "algo"="Stellite";"port"=16221;"coin"="STELLITE";"location"="US";"server"="stellite.ingest.cryptoknight.cc"; "fee"=0.0}
+        $CRYPTOKNIGHT_Pools +=[pscustomobject]@{"symbol"="IPBC"; "algo"="IPBC";"port"=4461;"coin"="IPBC";"location"="US";"server"="ipbc.ingest.cryptoknight.cc"; "fee"=0.0}
+        $CRYPTOKNIGHT_Pools +=[pscustomobject]@{"symbol"="GRFT"; "algo"="cryptonightv7";"port"=9111;"coin"="GRAFT";"location"="US";"server"="graft.ingest.cryptoknight.cc"; "fee"=0.0}
 
      
 
 
-        $Pools |  ForEach-Object {
+        $CRYPTOKNIGHT_Pools |  ForEach-Object {
 		
 			$Wallet = $CoinsWallets.get_item($_.symbol)
 			if ($Wallet -ne $null -and $Wallet -ne "") {
 
                 try {
-                    $Request=$null
+                    $CRYPTOKNIGHT_Request=$null
 					switch ($_.symbol.tolower()){
 						"xhv"{ $http="https://cryptoknight.cc/rpc/haven/stats";	$Divisor = 1000}
 						"xtl"{ $http="https://cryptoknight.cc/rpc/stellite/stats"; $Divisor = 1000}
+						"ipbc"{ $http="https://cryptoknight.cc/rpc/ipbc/stats"; $Divisor = 1000}
+						"grft"{ $http="https://cryptoknight.cc/rpc/graft/stats"; $Divisor = 1000}
 					}
 					writelog ("Stats URL: $http") $logfile $false
-                    $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 3 | ConvertFrom-Json 
+                    $CRYPTOKNIGHT_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 10 | ConvertFrom-Json 
+					Start-Sleep 1
 					# $BTCPriceResponse = Invoke-WebRequest "https://api.coindesk.com/v1/bpi/currentprice.json" -UseBasicParsing -TimeoutSec 2 | ConvertFrom-Json | Select-Object -ExpandProperty BPI
 					# $USDBTCvalue = [double]$BTCPriceResponse.usd.rate
 					# writelog ("USDBTCvalue: $USDBTCvalue") $logfile $false
                 }
                 catch {}
 
-					$CRYPTOKNIGHT_priceUSD = [double] $Request.charts.priceUSD[-1][1]
-					$CRYPTOKNIGHT_price = [double] $Request.charts.price[-1][1]
-					$CRYPTOKNIGHT_profit = [double] $Request.charts.profit3[-1][1]
+					$CRYPTOKNIGHT_priceUSD = [double] $CRYPTOKNIGHT_Request.charts.priceUSD[-1][1]
+					$CRYPTOKNIGHT_price = [double] $CRYPTOKNIGHT_Request.charts.price[-1][1]
+					$CRYPTOKNIGHT_profit = [double] $CRYPTOKNIGHT_Request.charts.profit3[-1][1]
 					$CRYPTOKNIGHT_profitBTC = $CRYPTOKNIGHT_profit / $CRYPTOKNIGHT_priceUSD * $CRYPTOKNIGHT_price / 100000000
 					writelog ("Profit: $CRYPTOKNIGHT_profit Price Sat: $CRYPTOKNIGHT_price Price USD: $CRYPTOKNIGHT_priceUSD ProfitBTC: $CRYPTOKNIGHT_profitBTC") $logfile $false
                
@@ -156,8 +165,8 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
                                 AbbName       = $AbbName
                                 ActiveOnManualMode    = $ActiveOnManualMode
                                 ActiveOnAutomaticMode = $ActiveOnAutomaticMode
-                                PoolWorkers   = $Request.pool.miners
-                                PoolHashRate  = $Request.pool.hashRate
+                                PoolWorkers   = $CRYPTOKNIGHT_Request.pool.miners
+                                PoolHashRate  = $CRYPTOKNIGHT_Request.pool.hashRate
                                 Blocks_24h    = $null
                                 WalletMode    = $WalletMode
                                 WalletSymbol    = $_.symbol
@@ -171,14 +180,14 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 								#$LogFile=".\Logs\ETHERMINE.txt"
 								#Writelog ($logtext) $LogFile $False
                 
-					Remove-Variable Request
+					Remove-Variable CRYPTOKNIGHT_Request
 					#Remove-Variable BTCPriceResponse
 			} else {
 				    writelog ("No wallet for coin "+[string]$_.symbol) $logfile $false
 			}
   
 		}
-		Remove-Variable Pools
+		Remove-Variable CRYPTOKNIGHT_Pools
 	}
                   
 $Result |ConvertTo-Json | Set-Content $info.SharedFile
