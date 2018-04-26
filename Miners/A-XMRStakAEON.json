@@ -10,7 +10,7 @@
 "Wrap" : false,
 "Dualmining":false,
 "Fee":"0.01",
-"PrelaunchCommand":"",
+"PrelaunchCommand":".\\ResetVideo.cmd",
 "Algorithms": [
                 {"Haven":"--currency haven"}
               ]

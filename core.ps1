@@ -936,7 +936,7 @@ while ($Quit -eq $false) {
                             $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].stats.ActivatedTimes++
                             $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].statsHistory.ActivatedTimes++
                             if ($ActiveMiners[$BestNow.IdF].GenerateConfigFile -ne "") {$ActiveMiners[$BestNow.IdF].ConfigFileArguments | Set-Content ($ActiveMiners[$BestNow.IdF].GenerateConfigFile)}
-                            if ($ActiveMiners[$BestNow.IdF].PrelaunchCommand -ne $null -and $ActiveMiners[$BestNow.IdF].PrelaunchCommand -ne "") {Start-Process -FilePath $ActiveMiners[$BestNow.IdF].PrelaunchCommand}                                             #run prelaunch command
+                            if ($ActiveMiners[$BestNow.IdF].PrelaunchCommand -ne $null -and $ActiveMiners[$BestNow.IdF].PrelaunchCommand -ne "") {Start-Process -Wait -FilePath $ActiveMiners[$BestNow.IdF].PrelaunchCommand}                                             #run prelaunch command
 
                             if ($ActiveMiners[$BestNow.IdF].Api -eq "Wrapper") {$ActiveMiners[$BestNow.IdF].Process = Start-Process -FilePath "PowerShell" -ArgumentList "-executionpolicy bypass -command . '$(Convert-Path ".\Wrapper.ps1")' -ControllerProcessID $PID -Id '$($ActiveMiners[$BestNow.IdF].Port)' -FilePath '$($ActiveMiners[$BestNow.IdF].Path)' -ArgumentList '$($ActiveMiners[$BestNow.IdF].Arguments)' -WorkingDirectory '$(Split-Path $ActiveMiners[$BestNow.IdF].Path)'" -PassThru}
                             else {$ActiveMiners[$BestNow.IdF].Process = Start_SubProcess -FilePath $ActiveMiners[$BestNow.IdF].Path -ArgumentList $ActiveMiners[$BestNow.IdF].Arguments -WorkingDirectory (Split-Path $ActiveMiners[$BestNow.IdF].Path)}
