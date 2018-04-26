@@ -1326,6 +1326,7 @@ function get_algo_unified_name ([string]$Algo) {
             "hashimoto" {$Result="Ethash"}
             "skunkhash" {$Result="skunk"}
             "Phi1612" {$Result="phi"}
+			"Cryptonight-Monero" {$Result="cryptonightv7"}
             default {$Result=$Algo}
             }        
      $Result       
