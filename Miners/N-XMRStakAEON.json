@@ -16,7 +16,7 @@
                 {"IPBC":"--currency ipbc --nvidia nvidia_light.txt"},
                 {"CryptoNightHeavy":"--currency cryptonight_heavy --nvidia nvidia_heavy.txt"},
                 {"CryptoLightV7":"--currency cryptonight_lite_v7 --nvidia nvidia_light.txt"},
-                {"CryptoLight":"--currency cryptonight_lite --nvidia nvidia_light.txt"}
+                {"CryptoLight":"--currency cryptonight_lite --nvidia nvidia_light.txt"},
                 {"CryptoNightV7":"--currency cryptonight_v7"},
                 {"CryptoNight":"--currency cryptonight"}
               ]

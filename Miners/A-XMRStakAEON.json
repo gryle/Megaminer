@@ -16,7 +16,7 @@
                 {"IPBC":"--currency ipbc --amd amd_light.txt"},
                 {"CryptoNightHeavy":"--currency cryptonight_heavy --amd amd_heavy.txt"},
                 {"CryptoLightV7":"--currency cryptonight_lite_v7 --amd amd_light.txt"},
-                {"CryptoLight":"--currency cryptonight_lite --amd amd_light.txt"}
+                {"CryptoLight":"--currency cryptonight_lite --amd amd_light.txt"},
                 {"CryptoNightV7":"--currency cryptonight_v7"},
                 {"CryptoNight":"--currency cryptonight"}
               ]
