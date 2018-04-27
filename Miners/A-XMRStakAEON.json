@@ -1,9 +1,9 @@
 {
-"Path" : ".\\Bin\\AMD-XMR_STAK\\XMR-AEON-STAK-2.4.3-20180409-win64-1%fee\\xmr-stak.exe",
+"Path" : ".\\Bin\\AMD-XMR_STAK\\XMR-AEON-STAK-2.4.6-20180427-win64-1%fee\\xmr-stak.exe",
 "ExtractionPath" : ".\\Bin\\AMD-XMR_STAK\\",
-"Uri" : "https://github.com/IndeedMiners/xmr-aeon-stak/releases/download/2.4.3/XMR-AEON-STAK-2.4.3-V7-CN-HEAVY-haven-fix-1.fee.zip",
+"Uri" : "https://github.com/IndeedMiners/xmr-aeon-stak/releases/download/2.4.6/XMR-AEON-STAK-2.4.6-20180427-win64-1.fee.zip",
 "Types" : ["AMD"],
-"GenerateConfigFile" : ".\\Bin\\AMD-XMR_STAK\\XMR-AEON-STAK-2.4.3-20180409-win64-1%fee\\config.txt",
+"GenerateConfigFile" : ".\\Bin\\AMD-XMR_STAK\\XMR-AEON-STAK-2.4.6-20180427-win64-1%fee\\config.txt",
 "PatternConfigFile": ".\\Patterns\\xmr-stak.txt",
 "Arguments" : "--noUAC --noCPU --noNVIDIA --url #SERVER#:#PORT# --user #LOGIN# --pass #PASSWORD# -r #WORKERNAME# #ALGORITHMPARAMETERS#",
 "API" : "fireice",
@@ -12,7 +12,13 @@
 "Fee":"0.01",
 "PrelaunchCommand":"",
 "Algorithms": [
-                {"Haven":"--currency haven"}
+                {"Haven":"--currency haven --amd amd_heavy.txt"},
+                {"IPBC":"--currency ipbc --amd amd_light.txt"},
+                {"CryptoNightHeavy":"--currency cryptonight_heavy --amd amd_heavy.txt"},
+                {"CryptoLightV7":"--currency cryptonight_lite_v7 --amd amd_light.txt"},
+                {"CryptoLight":"--currency cryptonight_lite --amd amd_light.txt"}
+                {"CryptoNightV7":"--currency cryptonight_v7"},
+                {"CryptoNight":"--currency cryptonight"}
               ]
 
 }
