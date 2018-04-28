@@ -133,8 +133,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					Start-Sleep 1
 					$CRYPTONOTE_Request2 = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  "$http/pool/stats" -UseBasicParsing -timeoutsec 10 | ConvertFrom-Json 
 				} else {
-					$CRYPTONOTE_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  "$http/live_stats" -UseBasicParsing -timeoutsec 10 | ConvertFrom-Json 
-					$CRYPTONOTE_Request2 = $null
+					$CRYPTONOTE_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  "$http/live_stats" -UseBasicParsing -timeoutsec 30 | ConvertFrom-Json 
 				}
 			}
 			catch {}
@@ -172,6 +171,8 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					EthStMode = 0
 					RewardType=$RewardType
 				}
+				Remove-Variable CRYPTONOTE_Request
+				Remove-Variable CRYPTONOTE_Request2
 			} else {
 				$CRYPTONOTE_price = [double] $TRADEOGRE_Coin.price * 86400 / $CRYPTONOTE_Request.network.difficulty * $CRYPTONOTE_Request.network.reward / $CoinUnits
 				
@@ -203,10 +204,9 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					EthStMode = 0
 					RewardType=$RewardType
 				}
+				Remove-Variable CRYPTONOTE_Request
 			}
 			
-			Remove-Variable CRYPTONOTE_Request
-			Remove-Variable CRYPTONOTE_Request2
 		} else {
 		    writelog ("No wallet for coin "+[string]$_.symbol) $logfile $false
 		}
