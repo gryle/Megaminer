@@ -11,7 +11,7 @@
 "Fee" : 0.01,
 "Algorithms": [
                 {"CRYPTONIGHT":""},
-                {"CRYPTONIGHTV7":""}
+                {"CRYPTONIGHTV7":"--variant 1"}
               ]
 
 }
