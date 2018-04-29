@@ -124,7 +124,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 				$CRYPTONOTE_Request=$null
 				switch ($_.symbol.tolower()){
 					"sumo"{ $http="https://sumokoin.hashvault.pro/api"; $CoinUnits = 1000000000; $TradeOgrePair = "BTC-SUMO"}
-					"itns"{ $http="https://intense.hashvault.pro/api"; $CoinUnits = 1000000000; $TradeOgrePair = "BTC-ITNS"}
+					"itns"{ $http="https://intense.hashvault.pro/api"; $CoinUnits = 100000000; $TradeOgrePair = "BTC-ITNS"}
 					"omb"{ $http="https://ombre.infinity-pools.cf:8888"; $CoinUnits = 1000000000; $TradeOgrePair = "BTC-OMB"}
 				}
 				writelog ("Stats URL: $http") $logfile $false

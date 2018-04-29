@@ -1,0 +1,27 @@
+{
+"Path" : ".\\Bin\\CPU-XMR_STAK\\XMR-AEON-STAK-2.4.6-20180427-win64-1%fee\\xmr-stak.exe",
+"ExtractionPath" : ".\\Bin\\CPU-XMR_STAK\\",
+"Uri" : "https://github.com/IndeedMiners/xmr-aeon-stak/releases/download/2.4.6/XMR-AEON-STAK-2.4.6-20180427-win64-1.fee.zip",
+"Types" : ["CPU"],
+"GenerateConfigFile" : ".\\Bin\\CPU-XMR_STAK\\XMR-AEON-STAK-2.4.6-20180427-win64-1%fee\\config.txt",
+"PatternConfigFile": ".\\Patterns\\xmr-stak.txt",
+"Arguments" : "--noUAC --noAMD --noNVIDIA --url #SERVER#:#PORT# --user #LOGIN# --pass #PASSWORD# -r #WORKERNAME# #ALGORITHMPARAMETERS#",
+"API" : "fireice",
+"Wrap" : false,
+"Dualmining":false,
+"Fee":"0.01",
+"PrelaunchCommand":"",
+"Algorithms": [
+                {"Haven":"--currency haven"},
+                {"IPBC":"--currency ipbc"},
+                {"CryptoNightHeavy":"--currency cryptonight_heavy"},
+                {"CryptoLightV7":"--currency cryptonight_lite_v7"},
+                {"CryptoLight":"--currency cryptonight_lite"},
+                {"CryptoNightV7":"--use-nicehash --currency cryptonight_v7"},
+                {"CryptoNight":"--use-nicehash --currency cryptonight"}
+              ]
+
+}
+
+
+ 
