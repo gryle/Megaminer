@@ -12,11 +12,11 @@
 "Fee":"0.01",
 "PrelaunchCommand":"",
 "Algorithms": [
-                {"Haven":"--currency haven"},
-                {"IPBC":"--currency ipbc"},
-                {"CryptoNightHeavy":"--currency cryptonight_heavy"},
-                {"CryptoLightV7":"--currency cryptonight_lite_v7"},
-                {"CryptoLight":"--currency cryptonight_lite"},
+                {"Haven":"--currency haven --cpu cpu_heavy.txt"},
+                {"IPBC":"--currency ipbc --cpu cpu_light.txt"},
+                {"CryptoNightHeavy":"--currency cryptonight_heavy --cpu cpu_heavy.txt"},
+                {"CryptoLightV7":"--currency cryptonight_lite_v7 --cpu cpu_light.txt"},
+                {"CryptoLight":"--currency cryptonight_lite --cpu cpu_light.txt"},
                 {"CryptoNightV7":"--use-nicehash --currency cryptonight_v7"},
                 {"CryptoNight":"--use-nicehash --currency cryptonight"}
               ]
