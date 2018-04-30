@@ -44,21 +44,20 @@ if ($Querymode -eq "SPEED")    {
     
     try {
         #$http="https://api.nanopool.org/v1/"+$Info.symbol.tolower()+"/history/"+$Info.user
+		$http = $null
         switch ($Info.symbol.tolower()){
             "sumo"{$http="https://sumokoin.hashvault.pro/api/miner/"+$Info.user+"/stats"}
             "itns"{$http="https://intense.hashvault.pro/api/miner/"+$Info.user+"/stats"}
         }
 
-        $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json 
+        if ($http -ne $null) { $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json  }
 
-        if ($Request.data -ne "") {
-                $CRYPTONOTE_hashrate = [double] $Request.hash
-                $Result=[PSCustomObject]@{
-                    PoolName =$name
-                    Workername = $Info.WorkerName
-                    Hashrate = $CRYPTONOTE_hashrate
-                }
-        }
+		$CRYPTONOTE_hashrate = [double] $Request.hash
+		$Result=[PSCustomObject]@{
+			PoolName =$name
+			Workername = $Info.WorkerName
+			Hashrate = $CRYPTONOTE_hashrate
+		}
     }
     catch {}
 
@@ -79,11 +78,13 @@ if ($Querymode -eq "WALLET")    {
 
 	try {
 	    #$http="https://api.nanopool.org/v1/"+$Info.symbol.tolower()+"/balance/"+$Info.user
+		$http = $null
+		$coinUnits = 1
 		switch ($Info.symbol.tolower()){
 			"sumo"{$coinUnits=1000000000; $http="https://sumokoin.hashvault.pro/api/miner/"+$Info.user+"/stats"}
-			"itns"{$coinUnits=1000000000; $http="https://intense.hashvault.pro/api/miner/"+$Info.user+"/stats"}
+			"itns"{$coinUnits=100000000; $http="https://intense.hashvault.pro/api/miner/"+$Info.user+"/stats"}
 		}
-	    $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json 
+		if ($http -ne $null) { $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json  }
 	}
 	catch {}
 

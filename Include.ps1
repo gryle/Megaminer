@@ -960,7 +960,7 @@ function Start_SubProcess {
         [Parameter(Mandatory = $false)]
         [String]$ArgumentList = "", 
         [Parameter(Mandatory = $false)]
-        [String]$WorkingDirectory = ""
+        [String]$WorkingDirectory = "",
         [Parameter(Mandatory = $false)]
         [String]$Priority = $null
         
@@ -982,7 +982,7 @@ function Start_SubProcess {
             [PSCustomObject]@{ProcessId = $null}
             return        
         }
-        if ($Priority -ne $null) { $Process.priorityclass = $Priority }
+        if ($Priority -ne $null -and $Priority -ne "") { $Process.priorityclass = $Priority }
 
         [PSCustomObject]@{ProcessId = $Process.Id; ProcessHandle = $Process.Handle}
         

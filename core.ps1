@@ -449,7 +449,7 @@ while ($Quit -eq $false) {
 
                                         $Arguments = $Miner.Arguments  -replace '#PORT#',$Pool.Port -replace '#SERVER#',$Pool.Host -replace '#PROTOCOL#',$Pool.Protocol -replace '#LOGIN#',$Pool.user -replace '#PASSWORD#',$Pool.Pass -replace "#GpuPlatform#",$TypeGroup.GpuPlatform  -replace '#ALGORITHM#',$Algoname -replace '#ALGORITHMPARAMETERS#',$Algo.PSObject.Properties.Value -replace '#WORKERNAME#',$WorkerName2  -replace '#DEVICES#',$TypeGroup.Gpus   -replace '#DEVICESCLAYMODE#',$TypeGroup.GpusClayMode -replace '#DEVICESETHMODE#',$TypeGroup.GpusETHMode -replace '#GROUPNAME#',$TypeGroup.Groupname -replace "#ETHSTMODE#",$Pool.EthStMode -replace "#DEVICESNSGMODE#",$TypeGroup.GpusNsgMode                   
                                         if ($Miner.PatternConfigFile -ne $null) {
-                                                        $ConfigFileArguments =  replace_foreach_gpu (get-content $Miner.PatternConfigFile -raw)  $TypeGroup.Gpus
+                                                        if ($TypeGroup.Gpus -ne $null) { $ConfigFileArguments =  replace_foreach_gpu (get-content $Miner.PatternConfigFile -raw)  $TypeGroup.Gpus }
                                                         $ConfigFileArguments = $ConfigFileArguments -replace '#PORT#',$Pool.Port -replace '#SERVER#',$Pool.Host -replace '#PROTOCOL#',$Pool.Protocol -replace '#LOGIN#',$Pool.user -replace '#PASSWORD#',$Pool.Pass -replace "#GpuPlatform#",$TypeGroup.GpuPlatform   -replace '#ALGORITHM#',$Algoname -replace '#ALGORITHMPARAMETERS#',$Algo.PSObject.Properties.Value -replace '#WORKERNAME#',$WorkerName2  -replace '#DEVICES#',$TypeGroup.Gpus -replace '#DEVICESCLAYMODE#',$TypeGroup.GpusClayMode  -replace '#DEVICESETHMODE#',$TypeGroup.GpusETHMode -replace '#GROUPNAME#',$TypeGroup.Groupname -replace "#ETHSTMODE#",$Pool.EthStMode -replace "#DEVICESNSGMODE#",$TypeGroup.GpusNsgMode                   
                                                     }
 
@@ -625,7 +625,7 @@ while ($Quit -eq $false) {
                                                         PoolWorkersDual = $PoolDual.PoolWorkers
                                                         Port = if (($Types |Where-object type -eq $TypeGroup.type).count -le 1 -and $DelayCloseMiners -eq 0 -and $config.ForceDynamicPorts -ne "Enabled" ) {$miner.ApiPort} else {$null}
                                                         PrelaunchCommand = $Miner.PrelaunchCommand
-							ProcessPriority = $Miner.ProcessPriority
+                                                        ProcessPriority = $Miner.ProcessPriority
                                                         Subminers = $Subminers
                                                         Symbol = $Pool.Symbol
                                                         SymbolDual = $PoolDual.Symbol
@@ -941,7 +941,7 @@ while ($Quit -eq $false) {
                             if ($ActiveMiners[$BestNow.IdF].PrelaunchCommand -ne $null -and $ActiveMiners[$BestNow.IdF].PrelaunchCommand -ne "") {Start-Process -FilePath $ActiveMiners[$BestNow.IdF].PrelaunchCommand}                                             #run prelaunch command
 
                             if ($ActiveMiners[$BestNow.IdF].Api -eq "Wrapper") {$ActiveMiners[$BestNow.IdF].Process = Start-Process -FilePath "PowerShell" -ArgumentList "-executionpolicy bypass -command . '$(Convert-Path ".\Wrapper.ps1")' -ControllerProcessID $PID -Id '$($ActiveMiners[$BestNow.IdF].Port)' -FilePath '$($ActiveMiners[$BestNow.IdF].Path)' -ArgumentList '$($ActiveMiners[$BestNow.IdF].Arguments)' -WorkingDirectory '$(Split-Path $ActiveMiners[$BestNow.IdF].Path)'" -PassThru}
-                            else {$ActiveMiners[$BestNow.IdF].Process = Start_SubProcess -FilePath $ActiveMiners[$BestNow.IdF].Path -ArgumentList $ActiveMiners[$BestNow.IdF].Arguments -WorkingDirectory (Split-Path $ActiveMiners[$BestNow.IdF].Path)} -Priority $ActiveMiners[$BestNow.IdF].ProcessPriority
+                            else {$ActiveMiners[$BestNow.IdF].Process = Start_SubProcess -FilePath $ActiveMiners[$BestNow.IdF].Path -ArgumentList $ActiveMiners[$BestNow.IdF].Arguments -WorkingDirectory (Split-Path $ActiveMiners[$BestNow.IdF].Path) -Priority $ActiveMiners[$BestNow.IdF].ProcessPriority }
                             
   
                             $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].Status =  "Running"
