@@ -8,6 +8,7 @@
 "Apiport": 12358,
 "Dualmining":false,
 "PrelaunchCommand":"",
+"ProcessPriority":"Idle",
 "Fee" : 0.01,
 "Algorithms": [
                 {"CRYPTONIGHT":""},

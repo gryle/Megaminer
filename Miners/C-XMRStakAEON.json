@@ -11,6 +11,7 @@
 "Dualmining":false,
 "Fee":"0.01",
 "PrelaunchCommand":"",
+"ProcessPriority":"Idle",
 "Algorithms": [
                 {"Haven":"--currency haven --cpu cpu_heavy.txt"},
                 {"IPBC":"--currency ipbc --cpu cpu_light.txt"},

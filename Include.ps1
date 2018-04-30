@@ -961,11 +961,13 @@ function Start_SubProcess {
         [String]$ArgumentList = "", 
         [Parameter(Mandatory = $false)]
         [String]$WorkingDirectory = ""
+        [Parameter(Mandatory = $false)]
+        [String]$Priority = $null
         
     )
 
-    $Job = Start-Job -ArgumentList $PID, $FilePath, $ArgumentList, $WorkingDirectory {
-        param($ControllerProcessID, $FilePath, $ArgumentList, $WorkingDirectory)
+    $Job = Start-Job -ArgumentList $PID, $FilePath, $ArgumentList, $WorkingDirectory, $Priority {
+        param($ControllerProcessID, $FilePath, $ArgumentList, $WorkingDirectory, $Priority)
 
         $ControllerProcess = Get-Process -Id $ControllerProcessID
         if ($ControllerProcess -eq $null) {return}
@@ -980,6 +982,7 @@ function Start_SubProcess {
             [PSCustomObject]@{ProcessId = $null}
             return        
         }
+        if ($Priority -ne $null) { $Process.priorityclass = $Priority }
 
         [PSCustomObject]@{ProcessId = $Process.Id; ProcessHandle = $Process.Handle}
         

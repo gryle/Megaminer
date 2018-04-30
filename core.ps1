@@ -625,6 +625,7 @@ while ($Quit -eq $false) {
                                                         PoolWorkersDual = $PoolDual.PoolWorkers
                                                         Port = if (($Types |Where-object type -eq $TypeGroup.type).count -le 1 -and $DelayCloseMiners -eq 0 -and $config.ForceDynamicPorts -ne "Enabled" ) {$miner.ApiPort} else {$null}
                                                         PrelaunchCommand = $Miner.PrelaunchCommand
+							ProcessPriority = $Miner.ProcessPriority
                                                         Subminers = $Subminers
                                                         Symbol = $Pool.Symbol
                                                         SymbolDual = $PoolDual.Symbol
@@ -779,6 +780,7 @@ while ($Quit -eq $false) {
 							PoolRewardType       = $Miner.PoolRewardType
                             Port                 = $Miner.Port
                             PrelaunchCommand     = $Miner.PrelaunchCommand
+                            ProcessPriority      = $Miner.ProcessPriority
                             Process              = $null
                             SubMiners            = $Miner.SubMiners
                             Symbol               = $Miner.Symbol
@@ -939,7 +941,7 @@ while ($Quit -eq $false) {
                             if ($ActiveMiners[$BestNow.IdF].PrelaunchCommand -ne $null -and $ActiveMiners[$BestNow.IdF].PrelaunchCommand -ne "") {Start-Process -FilePath $ActiveMiners[$BestNow.IdF].PrelaunchCommand}                                             #run prelaunch command
 
                             if ($ActiveMiners[$BestNow.IdF].Api -eq "Wrapper") {$ActiveMiners[$BestNow.IdF].Process = Start-Process -FilePath "PowerShell" -ArgumentList "-executionpolicy bypass -command . '$(Convert-Path ".\Wrapper.ps1")' -ControllerProcessID $PID -Id '$($ActiveMiners[$BestNow.IdF].Port)' -FilePath '$($ActiveMiners[$BestNow.IdF].Path)' -ArgumentList '$($ActiveMiners[$BestNow.IdF].Arguments)' -WorkingDirectory '$(Split-Path $ActiveMiners[$BestNow.IdF].Path)'" -PassThru}
-                            else {$ActiveMiners[$BestNow.IdF].Process = Start_SubProcess -FilePath $ActiveMiners[$BestNow.IdF].Path -ArgumentList $ActiveMiners[$BestNow.IdF].Arguments -WorkingDirectory (Split-Path $ActiveMiners[$BestNow.IdF].Path)}
+                            else {$ActiveMiners[$BestNow.IdF].Process = Start_SubProcess -FilePath $ActiveMiners[$BestNow.IdF].Path -ArgumentList $ActiveMiners[$BestNow.IdF].Arguments -WorkingDirectory (Split-Path $ActiveMiners[$BestNow.IdF].Path)} -Priority $ActiveMiners[$BestNow.IdF].ProcessPriority
                             
   
                             $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].Status =  "Running"
