@@ -166,14 +166,14 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					EthStMode = 0
 					RewardType=$RewardType
 				}
-				Remove-Variable CRYPTONOTE_Request
+				Remove-Variable CRYPTONOTE2_Request
 			
 		} else {
 		    writelog ("No wallet for coin "+[string]$_.symbol) $logfile $false
 		}
   
 	}
-Remove-Variable CRYPTONOTE_Pools
+Remove-Variable CRYPTONOTE2_Pools
 }
                   
 $Result |ConvertTo-Json | Set-Content $info.SharedFile
