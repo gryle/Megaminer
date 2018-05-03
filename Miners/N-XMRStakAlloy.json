@@ -10,7 +10,7 @@
 "Fee":"0.01",
 "PrelaunchCommand":"",
 "Algorithms": [
-                {"Alloy":"--currency alloy"}
+                {"Alloy":"--currency cryptonight_alloy"}
               ]
 
 }

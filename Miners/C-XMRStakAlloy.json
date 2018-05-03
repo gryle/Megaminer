@@ -11,7 +11,7 @@
 "PrelaunchCommand":"",
 "ProcessPriority":"Idle",
 "Algorithms": [
-                {"Alloy":"--currency alloy"}
+                {"Alloy":"--currency cryptonight_alloy"}
               ]
 
 }

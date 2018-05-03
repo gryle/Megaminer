@@ -45,9 +45,10 @@ if ($Querymode -eq "SPEED")    {
     try {
         #$http="https://api.nanopool.org/v1/"+$Info.symbol.tolower()+"/history/"+$Info.user
         switch ($Info.symbol.tolower()){
-			"omb"{ $http="https://omb.infinity-pools.cc:8119/stats_address?address="+$Info.user; $CoinUnits = 1000000000}
-			"msr"{ $http="https://masari.superpools.net/api/stats_address?address="+$Info.user; $CoinUnits = 1000000000000}
-			"loki"{ $http="https://loki.miner.rocks/api/stats_address?address="+$Info.user; $CoinUnits = 1000000000}
+			"omb"{ $http="https://omb.infinity-pools.cc:8119/stats_address?address="+$Info.user}
+			"msr"{ $http="https://masari.superpools.net/api/stats_address?address="+$Info.user}
+			"loki"{ $http="https://loki.miner.rocks/api/stats_address?address="+$Info.user}
+			"xao"{$http="https://cryptoknight.cc/rpc/alloy/stats_address?address="+$Info.user}
         }
 
         $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json 
@@ -88,6 +89,7 @@ if ($Querymode -eq "WALLET")    {
 			"omb"{ $http="https://omb.infinity-pools.cc:8119/stats_address?address="+$Info.user; $CoinUnits = 1000000000}
 			"msr"{ $http="https://masari.superpools.net/api/stats_address?address="+$Info.user; $CoinUnits = 1000000000000}
 			"loki"{ $http="https://loki.miner.rocks/api/stats_address?address="+$Info.user; $CoinUnits = 1000000000}
+			"xao"{$http="https://cryptoknight.cc/rpc/alloy/stats_address?address="+$Info.user; $CoinUnits = 1000000000000}
 		}
 	    $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json 
 	}
@@ -114,7 +116,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
         $CRYPTONOTE2_Pools +=[pscustomobject]@{"symbol"="OMB"; "algo"="CryptoNightHeavy";"port"=4446;"coin"="OMBRE";"location"="EU";"server"="ombre.infinity-pools.cf"}
         $CRYPTONOTE2_Pools +=[pscustomobject]@{"symbol"="MSR"; "algo"="CryptoNightV7";"port"=5555;"coin"="MASARI";"location"="EU";"server"="masari.superpools.net"}
         $CRYPTONOTE2_Pools +=[pscustomobject]@{"symbol"="LOKI"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="LOKI";"location"="EU";"server"="loki.miner.rocks"}
-
+        $CRYPTONOTE2_Pools +=[pscustomobject]@{"symbol"="XAO"; "algo"="Alloy";"port"=5661;"coin"="ALLOY";"location"="US";"server"="alloy.ingest.cryptoknight.cc"}
      
         try {
                 $TRADEOGRE_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36" "https://tradeogre.com/api/v1/markets" -UseBasicParsing -timeoutsec 10 | ConvertFrom-Json 
@@ -132,6 +134,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					"omb"{ $http="https://omb.infinity-pools.cc:8119/stats"; $CoinUnits = 1000000000; $TradeOgrePair = "BTC-OMB"}
 					"msr"{ $http="https://masari.superpools.net/api/stats"; $CoinUnits = 1000000000000; $TradeOgrePair = "BTC-MSR"}
 					"loki"{ $http="https://loki.miner.rocks/api/stats"; $CoinUnits = 1000000000; $TradeOgrePair = "BTC-LOKI"}
+					"xao"{ $http="https://cryptoknight.cc/rpc/alloy/stats";	$TradeOgrePair = "BTC-XAO"}
 				}
 				writelog ("Stats URL: $http") $logfile $false
 				$CRYPTONOTE2_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 30 | ConvertFrom-Json 
@@ -140,7 +143,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 			
 			$TRADEOGRE_Coin = $TRADEOGRE_Request | where-object { $_.$TradeOgrePair -ne $null } | Select-Object -ExpandProperty $TradeOgrePair
 			
-				$CRYPTONOTE2_price = [double] $TRADEOGRE_Coin.price * 86400 / $CRYPTONOTE2_Request.network.difficulty * $CRYPTONOTE2_Request.network.reward / $CoinUnits
+				$CRYPTONOTE2_price = [double] $TRADEOGRE_Coin.price * 86400 / $CRYPTONOTE2_Request.network.difficulty * $CRYPTONOTE2_Request.network.reward / $CRYPTONOTE2_Request.config.coinUnits
 				writelog ("TradeOgre: $TRADEOGRE_Coin Price: $CRYPTONOTE2_price") $logfile $false
 			       
 				$Result+=[PSCustomObject]@{
