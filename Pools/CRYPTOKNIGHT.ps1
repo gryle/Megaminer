@@ -49,6 +49,7 @@ if ($Querymode -eq "SPEED")    {
             "xtl"{$http="https://cryptoknight.cc/rpc/stellite/stats_address?address="+$Info.user}
             "ipbc"{$http="https://cryptoknight.cc/rpc/ipbc/stats_address?address="+$Info.user}
             "grft"{$http="https://cryptoknight.cc/rpc/graft/stats_address?address="+$Info.user}
+            "xao"{$http="https://cryptoknight.cc/rpc/alloy/stats_address?address="+$Info.user}
         }
 
         $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json 
@@ -90,6 +91,7 @@ if ($Querymode -eq "SPEED")    {
 										"xtl"{$http="https://cryptoknight.cc/rpc/stellite/stats_address?address="+$Info.user}
 										"ipbc"{$http="https://cryptoknight.cc/rpc/ipbc/stats_address?address="+$Info.user}
 										"grft"{$http="https://cryptoknight.cc/rpc/graft/stats_address?address="+$Info.user}
+										"xao"{$http="https://cryptoknight.cc/rpc/alloy/stats_address?address="+$Info.user}										
 									}
                                     $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json 
                                 }
@@ -117,6 +119,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
         $CRYPTOKNIGHT_Pools +=[pscustomobject]@{"symbol"="XTL"; "algo"="cryptonightv7";"port"=16221;"coin"="STELLITE";"location"="US";"server"="stellite.ingest.cryptoknight.cc"; "fee"=0.0}
         $CRYPTOKNIGHT_Pools +=[pscustomobject]@{"symbol"="IPBC"; "algo"="IPBC";"port"=4461;"coin"="IPBC";"location"="US";"server"="ipbc.ingest.cryptoknight.cc"; "fee"=0.0}
         $CRYPTOKNIGHT_Pools +=[pscustomobject]@{"symbol"="GRFT"; "algo"="cryptonightv7";"port"=9111;"coin"="GRAFT";"location"="US";"server"="graft.ingest.cryptoknight.cc"; "fee"=0.0}
+        $CRYPTOKNIGHT_Pools +=[pscustomobject]@{"symbol"="XAO"; "algo"="Alloy";"port"=5661;"coin"="ALLOY";"location"="US";"server"="alloy.ingest.cryptoknight.cc"; "fee"=0.0}
 
      
 
@@ -133,6 +136,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 						"xtl"{ $http="https://cryptoknight.cc/rpc/stellite/stats"; $Divisor = 1000}
 						"ipbc"{ $http="https://cryptoknight.cc/rpc/ipbc/stats"; $Divisor = 1000}
 						"grft"{ $http="https://cryptoknight.cc/rpc/graft/stats"; $Divisor = 1000}
+						"xao"{ $http="https://cryptoknight.cc/rpc/alloy/stats";	$Divisor = 1000}
 					}
 					writelog ("Stats URL: $http") $logfile $false
                     $CRYPTOKNIGHT_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 10 | ConvertFrom-Json 

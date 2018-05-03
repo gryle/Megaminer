@@ -1,0 +1,20 @@
+{
+"Path" : ".\\Bin\\CPU-XMR_STAK\\xmr-stak-alloy_2.4.3\\xmr-stak.exe",
+"ExtractionPath" : ".\\Bin\\CPU-XMR_STAK\\",
+"Uri" : "https://github.com/alloyproject/xmr-stak-alloy/releases/download/v2.4.3/xmr-stak-alloy_2.4.3_Win64.zip",
+"Types" : ["CPU"],
+"Arguments" : "--noUAC --noAMD --noNVIDIA --url #SERVER#:#PORT# --user #LOGIN# --pass #PASSWORD# -r #WORKERNAME# --httpd #APIPORT# #ALGORITHMPARAMETERS#",
+"API" : "fireice",
+"Wrap" : false,
+"Dualmining":false,
+"Fee":"0.01",
+"PrelaunchCommand":"",
+"ProcessPriority":"Idle",
+"Algorithms": [
+                {"Alloy":"--currency alloy"}
+              ]
+
+}
+
+
+ 
