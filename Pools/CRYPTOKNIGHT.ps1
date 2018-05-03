@@ -119,7 +119,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
         $CRYPTOKNIGHT_Pools +=[pscustomobject]@{"symbol"="XTL"; "algo"="cryptonightv7";"port"=16221;"coin"="STELLITE";"location"="US";"server"="stellite.ingest.cryptoknight.cc"; "fee"=0.0}
         $CRYPTOKNIGHT_Pools +=[pscustomobject]@{"symbol"="IPBC"; "algo"="IPBC";"port"=4461;"coin"="IPBC";"location"="US";"server"="ipbc.ingest.cryptoknight.cc"; "fee"=0.0}
         $CRYPTOKNIGHT_Pools +=[pscustomobject]@{"symbol"="GRFT"; "algo"="cryptonightv7";"port"=9111;"coin"="GRAFT";"location"="US";"server"="graft.ingest.cryptoknight.cc"; "fee"=0.0}
-        $CRYPTOKNIGHT_Pools +=[pscustomobject]@{"symbol"="XAO"; "algo"="Alloy";"port"=5661;"coin"="ALLOY";"location"="US";"server"="alloy.ingest.cryptoknight.cc"; "fee"=0.0}
+        #$CRYPTOKNIGHT_Pools +=[pscustomobject]@{"symbol"="XAO"; "algo"="Alloy";"port"=5661;"coin"="ALLOY";"location"="US";"server"="alloy.ingest.cryptoknight.cc"; "fee"=0.0}
 
      
 
