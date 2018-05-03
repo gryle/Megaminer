@@ -141,7 +141,6 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 			$TRADEOGRE_Coin = $TRADEOGRE_Request | where-object { $_.$TradeOgrePair -ne $null } | Select-Object -ExpandProperty $TradeOgrePair
 			
 				$CRYPTONOTE2_price = [double] $TRADEOGRE_Coin.price * 86400 / $CRYPTONOTE2_Request.network.difficulty * $CRYPTONOTE2_Request.network.reward / $CoinUnits
-				
 				writelog ("TradeOgre: $TRADEOGRE_Coin Price: $CRYPTONOTE2_price") $logfile $false
 			       
 				$Result+=[PSCustomObject]@{
@@ -153,7 +152,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					Host          = $_.server
 					Port          = $_.port
 					User          = $Wallet
-					Pass          = "#WorkerName#"
+					Pass          = $(if ($_.symbol.tolower() -eq "loki") {"w=#WorkerName#"} else {"#WorkerName#"})
 					Location      = $_.location
 					SSL           = $false
 					Symbol        = $_.symbol
