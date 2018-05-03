@@ -3,7 +3,7 @@
 "ExtractionPath" : ".\\Bin\\NVIDIA-XMR_STAK\\",
 "Uri" : "https://github.com/alloyproject/xmr-stak-alloy/releases/download/v2.4.3/xmr-stak-alloy_2.4.3_Win64.zip",
 "Types" : ["NVIDIA"],
-"Arguments" : "--noUAC --noCPU --noAMD --url #SERVER#:#PORT# --user #LOGIN# --pass #PASSWORD# -r #WORKERNAME# #ALGORITHMPARAMETERS#",
+"Arguments" : "--noUAC --noCPU --noAMD --url #SERVER#:#PORT# --user #LOGIN# --pass #PASSWORD# -r #WORKERNAME# --httpd #APIPORT# #ALGORITHMPARAMETERS#",
 "API" : "fireice",
 "Wrap" : false,
 "Dualmining":false,
