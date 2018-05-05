@@ -10,12 +10,12 @@
 "Fee":"0.01",
 "PrelaunchCommand":"",
 "Algorithms": [
-                {"Haven":"--currency haven --amd amd_heavy.txt"},
-                {"IPBC":"--currency ipbc --amd amd_light.txt"},
-                {"CryptoNightHeavy":"--currency cryptonight_heavy --amd amd_heavy.txt"},
-                {"CryptoLightV7":"--currency cryptonight_lite_v7 --amd amd_light.txt"},
-                {"CryptoLight":"--currency cryptonight_lite --amd amd_light.txt"},
-                {"CryptoNightV7":"--use-nicehash --currency cryptonight_v7"},
+                {"Haven":"--currency haven --amd amd_heavy.txt --poolconf pools_haven.txt"},
+                {"IPBC":"--currency ipbc --amd amd_light.txt --poolconf pools_ipbc.txt"},
+                {"CryptoNightHeavy":"--currency cryptonight_heavy --amd amd_heavy.txt --poolconf pools_heavy.txt"},
+                {"CryptoLightV7":"--currency cryptonight_lite_v7 --amd amd_light.txt --poolconf pools_light_v7.txt"},
+                {"CryptoLight":"--currency cryptonight_lite --amd amd_light.txt --poolconf pools_light.txt"},
+                {"CryptoNightV7":"--use-nicehash --currency cryptonight_v7 --poolconf pools_v7.txt"},
                 {"CryptoNight":"--use-nicehash --currency cryptonight"}
               ]
 
