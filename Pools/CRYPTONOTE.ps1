@@ -56,15 +56,15 @@ if ($Querymode -eq "SPEED")    {
         $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json 
 
         if ($Request.data -ne "") {
-				$CRYPTONOTE2_hashrate = [double] $Request.stats.hashrate.Split(" ")[0]
+				$CRYPTONOTE_hashrate = [double] $Request.stats.hashrate.Split(" ")[0]
 				switch ($Request.stats.hashrate.Split(" ")[1].tolower()) {
-					"mh" { $CRYPTONOTE2_hashrate = $CRYPTONOTE2_hashrate * 1000000 }
-					"kh" { $CRYPTONOTE2_hashrate = $CRYPTONOTE2_hashrate * 1000 }
+					"mh" { $CRYPTONOTE_hashrate = $CRYPTONOTE_hashrate * 1000000 }
+					"kh" { $CRYPTONOTE_hashrate = $CRYPTONOTE_hashrate * 1000 }
 				}
                 $Result=[PSCustomObject]@{
                     PoolName =$name
                     Workername = $Info.WorkerName
-                    Hashrate = $CRYPTONOTE2_hashrate
+                    Hashrate = $CRYPTONOTE_hashrate
                 }
         }
     }
@@ -116,26 +116,26 @@ if ($Querymode -eq "WALLET")    {
 
 if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 
-        $CRYPTONOTE2_Pools=@()
-        $CRYPTONOTE2_Pools +=[pscustomobject]@{"symbol"="OMB"; "algo"="CryptoNightHeavy";"port"=4446;"coin"="OMBRE";"location"="EU";"server"="ombre.infinity-pools.cf"}
-        $CRYPTONOTE2_Pools +=[pscustomobject]@{"symbol"="MSR"; "algo"="CryptoNightV7";"port"=5555;"coin"="MASARI";"location"="EU";"server"="masari.superpools.net"}
-        $CRYPTONOTE2_Pools +=[pscustomobject]@{"symbol"="LOKI"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="LOKI";"location"="EU";"server"="loki.miner.rocks"}
-        $CRYPTONOTE2_Pools +=[pscustomobject]@{"symbol"="XAO"; "algo"="Alloy";"port"=5661;"coin"="ALLOY";"location"="US";"server"="alloy.ingest.cryptoknight.cc"}
-        $CRYPTONOTE2_Pools +=[pscustomobject]@{"symbol"="IPBC"; "algo"="IPBC";"port"=15555;"coin"="IPBC";"location"="US";"server"="support.ipbc.io"}
-        $CRYPTONOTE2_Pools +=[pscustomobject]@{"symbol"="RTO"; "algo"="Arto";"port"=5555;"coin"="Arto";"location"="US";"server"="pool.arto.cash"}
+        $CRYPTONOTE_Pools=@()
+        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="OMB"; "algo"="CryptoNightHeavy";"port"=4446;"coin"="OMBRE";"location"="EU";"server"="ombre.infinity-pools.cf"}
+        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="MSR"; "algo"="CryptoNightV7";"port"=5555;"coin"="MASARI";"location"="EU";"server"="masari.superpools.net"}
+        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="LOKI"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="LOKI";"location"="EU";"server"="loki.miner.rocks"}
+        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XAO"; "algo"="Alloy";"port"=5661;"coin"="ALLOY";"location"="US";"server"="alloy.ingest.cryptoknight.cc"}
+        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="IPBC"; "algo"="IPBC";"port"=15555;"coin"="IPBC";"location"="US";"server"="support.ipbc.io"}
+        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="RTO"; "algo"="Arto";"port"=5555;"coin"="Arto";"location"="US";"server"="pool.arto.cash"}
      
         try {
                 $TRADEOGRE_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36" "https://tradeogre.com/api/v1/markets" -UseBasicParsing -timeoutsec 10 | ConvertFrom-Json 
         }
         catch {}
 
-        $CRYPTONOTE2_Pools |  ForEach-Object {
+        $CRYPTONOTE_Pools |  ForEach-Object {
                 
 		$Wallet = $CoinsWallets.get_item($_.symbol)
 		if ($Wallet -ne $null -and $Wallet -ne "") {
 
 			try {
-				$CRYPTONOTE2_Request=$null
+				$CRYPTONOTE_Request=$null
 				switch ($_.symbol.tolower()){
 					"omb"{ $http="https://omb.infinity-pools.cc:8119/stats"; $TradeOgrePair = "BTC-OMB"}
 					"msr"{ $http="https://masari.superpools.net/api/stats"; $TradeOgrePair = "BTC-MSR"}
@@ -145,19 +145,19 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					"rto"{ $http="http://pool.arto.cash:8117/stats";	$TradeOgrePair = "BTC-RTO"}
 				}
 				writelog ("Stats URL: $http") $logfile $false
-				$CRYPTONOTE2_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 30 | ConvertFrom-Json 
+				$CRYPTONOTE_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 30 | ConvertFrom-Json 
 			}
 			catch {}
 			
 			$TRADEOGRE_Coin = $TRADEOGRE_Request | where-object { $_.$TradeOgrePair -ne $null } | Select-Object -ExpandProperty $TradeOgrePair
 			
-				$CRYPTONOTE2_price = [double] $TRADEOGRE_Coin.price * 86400 / $CRYPTONOTE2_Request.network.difficulty * $CRYPTONOTE2_Request.network.reward / $CRYPTONOTE2_Request.config.coinUnits
-				writelog ("TradeOgre: $TRADEOGRE_Coin Price: $CRYPTONOTE2_price") $logfile $false
+				$CRYPTONOTE_price = [double] $TRADEOGRE_Coin.price * 86400 / $CRYPTONOTE_Request.network.difficulty * $CRYPTONOTE_Request.network.reward / $CRYPTONOTE_Request.config.coinUnits
+				writelog ("TradeOgre: $TRADEOGRE_Coin Price: $CRYPTONOTE_price") $logfile $false
 			       
 				$Result+=[PSCustomObject]@{
 					Algorithm     = $_.algo
 					Info          = $_.Coin
-					Price         = $CRYPTONOTE2_price
+					Price         = $CRYPTONOTE_price
 					Price24h      = $null
 					Protocol      = "stratum+tcp"
 					Host          = $_.server
@@ -170,24 +170,25 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					AbbName       = $AbbName
 					ActiveOnManualMode    = $ActiveOnManualMode
 					ActiveOnAutomaticMode = $ActiveOnAutomaticMode
-					PoolWorkers   = $CRYPTONOTE2_Request.pool.miners
-					PoolHashRate  = $CRYPTONOTE2_Request.pool.hashrate
+					PoolWorkers   = $CRYPTONOTE_Request.pool.miners
+					PoolHashRate  = $CRYPTONOTE_Request.pool.hashrate
 					Blocks_24h    = $null
 					WalletMode    = $WalletMode
 					WalletSymbol    = $_.symbol
 					PoolName = $Name
-					Fee = [double] $CRYPTONOTE2_Request.config.fee / 100
+					Fee = [double] $CRYPTONOTE_Request.config.fee / 100
 					EthStMode = 0
 					RewardType=$RewardType
 				}
-				Remove-Variable CRYPTONOTE2_Request
+				Remove-Variable CRYPTONOTE_Request
 			
 		} else {
 		    writelog ("No wallet for coin "+[string]$_.symbol) $logfile $false
 		}
   
 	}
-Remove-Variable CRYPTONOTE2_Pools
+Remove-Variable TRADEOGRE_Request
+Remove-Variable CRYPTONOTE_Pools
 }
                   
 $Result |ConvertTo-Json | Set-Content $info.SharedFile
