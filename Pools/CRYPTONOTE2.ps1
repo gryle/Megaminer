@@ -50,6 +50,7 @@ if ($Querymode -eq "SPEED")    {
 			"loki"{ $http="https://loki.miner.rocks/api/stats_address?address="+$Info.user}
 			"xao"{$http="https://cryptoknight.cc/rpc/alloy/stats_address?address="+$Info.user}
 			"ipbc"{$http="https://support.ipbc.io/api/stats_address?address="+$Info.user}
+			"rto"{ $http="http://pool.arto.cash:8117/stats_address?address="+$Info.user}
         }
 
         $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json 
@@ -92,6 +93,7 @@ if ($Querymode -eq "WALLET")    {
 			"loki"{ $http="https://loki.miner.rocks/api/stats_address?address="+$Info.user; $CoinUnits = 1000000000}
 			"xao"{$http="https://cryptoknight.cc/rpc/alloy/stats_address?address="+$Info.user; $CoinUnits = 1000000000000}
 			"ipbc"{$http="https://support.ipbc.io/api/stats_address?address="+$Info.user; $CoinUnits = 100000000}
+			"rto"{ $http="http://pool.arto.cash:8117/stats_address?address="+$Info.user; $CoinUnits = 100000000}
 		}
 	    $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json 
 	}
@@ -120,6 +122,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
         $CRYPTONOTE2_Pools +=[pscustomobject]@{"symbol"="LOKI"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="LOKI";"location"="EU";"server"="loki.miner.rocks"}
         $CRYPTONOTE2_Pools +=[pscustomobject]@{"symbol"="XAO"; "algo"="Alloy";"port"=5661;"coin"="ALLOY";"location"="US";"server"="alloy.ingest.cryptoknight.cc"}
         $CRYPTONOTE2_Pools +=[pscustomobject]@{"symbol"="IPBC"; "algo"="IPBC";"port"=15555;"coin"="IPBC";"location"="US";"server"="support.ipbc.io"}
+        $CRYPTONOTE2_Pools +=[pscustomobject]@{"symbol"="RTO"; "algo"="Arto";"port"=5555;"coin"="Arto";"location"="US";"server"="pool.arto.cash"}
      
         try {
                 $TRADEOGRE_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36" "https://tradeogre.com/api/v1/markets" -UseBasicParsing -timeoutsec 10 | ConvertFrom-Json 
@@ -139,6 +142,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					"loki"{ $http="https://loki.miner.rocks/api/stats"; $TradeOgrePair = "BTC-LOKI"}
 					"xao"{ $http="https://cryptoknight.cc/rpc/alloy/stats";	$TradeOgrePair = "BTC-XAO"}
 					"ipbc"{ $http="https://support.ipbc.io/api/stats";	$TradeOgrePair = "BTC-IPBC"}
+					"rto"{ $http="http://pool.arto.cash:8117/stats";	$TradeOgrePair = "BTC-RTO"}
 				}
 				writelog ("Stats URL: $http") $logfile $false
 				$CRYPTONOTE2_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 30 | ConvertFrom-Json 

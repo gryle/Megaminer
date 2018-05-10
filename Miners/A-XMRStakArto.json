@@ -1,0 +1,19 @@
+{
+"Path" : ".\\Bin\\AMD-XMR_STAK\\arto-miner-win64-v1.1.0\\arto-miner.exe",
+"ExtractionPath" : ".\\Bin\\AMD-XMR_STAK\\",
+"Uri" : "https://github.com/artocash/arto-miner/releases/download/v1.1.0/arto-miner-win64-v1.1.0.zip",
+"Types" : ["AMD"],
+"Arguments" : "--noUAC --noCPU --noNVIDIA --url #SERVER#:#PORT# --user #LOGIN# --pass #PASSWORD# -r #WORKERNAME# --httpd #APIPORT# #ALGORITHMPARAMETERS#",
+"API" : "fireice",
+"Wrap" : false,
+"Dualmining":false,
+"Fee":"0.01",
+"PrelaunchCommand":"",
+"Algorithms": [
+                {"Arto":"--currency arto"}
+              ]
+
+}
+
+
+ 
