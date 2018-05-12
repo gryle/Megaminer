@@ -29,4 +29,4 @@ $MinerReport = ConvertTo-Json @($ActiveMiners.SubMiners | Where-Object Status -e
 try {
     Invoke-RestMethod -Uri $MinerStatusURL -Method Post -Body @{address = $Key; workername = $WorkerName; miners = $MinerReport; profit = $Profit} | Out-Null
 } catch {}
-$MinerReport | Set-Content report.txt
+#$MinerReport | Set-Content report.txt
