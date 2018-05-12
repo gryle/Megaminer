@@ -51,6 +51,11 @@ if ($Querymode -eq "SPEED")    {
 			"xao"{$http="https://cryptoknight.cc/rpc/alloy/stats_address?address="+$Info.user}
 			"ipbc"{$http="https://support.ipbc.io/api/stats_address?address="+$Info.user}
 			"rto"{ $http="http://pool.arto.cash:8117/stats_address?address="+$Info.user}
+			"xhv"{$http="https://cryptoknight.cc/rpc/haven/stats_address?address="+$Info.user}
+			"xtl"{$http="https://cryptoknight.cc/rpc/stellite/stats_address?address="+$Info.user}
+			#"ipbc"{$http="https://cryptoknight.cc/rpc/ipbc/stats_address?address="+$Info.user}
+			"grft"{$http="https://cryptoknight.cc/rpc/graft/stats_address?address="+$Info.user}
+			#"xao"{$http="https://cryptoknight.cc/rpc/alloy/stats_address?address="+$Info.user}
         }
 
         $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json 
@@ -94,6 +99,11 @@ if ($Querymode -eq "WALLET")    {
 			"xao"{$http="https://cryptoknight.cc/rpc/alloy/stats_address?address="+$Info.user; $CoinUnits = 1000000000000}
 			"ipbc"{$http="https://support.ipbc.io/api/stats_address?address="+$Info.user; $CoinUnits = 100000000}
 			"rto"{ $http="http://pool.arto.cash:8117/stats_address?address="+$Info.user; $CoinUnits = 100000000}
+			"xhv"{$http="https://cryptoknight.cc/rpc/haven/stats_address?address="+$Info.user; $CoinUnits = 1000000000000}
+			"xtl"{$http="https://cryptoknight.cc/rpc/stellite/stats_address?address="+$Info.user; $CoinUnits = 100}
+			#"ipbc"{$http="https://cryptoknight.cc/rpc/ipbc/stats_address?address="+$Info.user; $CoinUnits = 100000000}
+			"grft"{$http="https://cryptoknight.cc/rpc/graft/stats_address?address="+$Info.user; $CoinUnits = 10000000000}
+			#"xao"{$http="https://cryptoknight.cc/rpc/alloy/stats_address?address="+$Info.user; $CoinUnits = 1000000000000}
 		}
 	    $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json 
 	}
@@ -123,6 +133,11 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XAO"; "algo"="Alloy";"port"=5661;"coin"="ALLOY";"location"="US";"server"="alloy.ingest.cryptoknight.cc"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="IPBC"; "algo"="IPBC";"port"=15555;"coin"="IPBC";"location"="US";"server"="support.ipbc.io"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="RTO"; "algo"="Arto";"port"=5555;"coin"="Arto";"location"="US";"server"="pool.arto.cash"}
+        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XHV"; "algo"="CryptoNightHeavy";"port"=5531;"coin"="HAVEN";"location"="US";"server"="haven.ingest.cryptoknight.cc"}
+        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XTL"; "algo"="cryptonightv7";"port"=16221;"coin"="STELLITE";"location"="US";"server"="stellite.ingest.cryptoknight.cc"}
+        #$CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="IPBC"; "algo"="IPBC";"port"=4461;"coin"="IPBC";"location"="US";"server"="ipbc.ingest.cryptoknight.cc"}
+        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="GRFT"; "algo"="cryptonightv7";"port"=9111;"coin"="GRAFT";"location"="US";"server"="graft.ingest.cryptoknight.cc"}
+        #$CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XAO"; "algo"="Alloy";"port"=5661;"coin"="ALLOY";"location"="US";"server"="alloy.ingest.cryptoknight.cc"}
      
         try {
                 $TRADEOGRE_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36" "https://tradeogre.com/api/v1/markets" -UseBasicParsing -timeoutsec 10 | ConvertFrom-Json 
@@ -141,8 +156,13 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					"msr"{ $http="https://masari.superpools.net/api/stats"; $TradeOgrePair = "BTC-MSR"}
 					"loki"{ $http="https://loki.miner.rocks/api/stats"; $TradeOgrePair = "BTC-LOKI"}
 					"xao"{ $http="https://cryptoknight.cc/rpc/alloy/stats";	$TradeOgrePair = "BTC-XAO"}
-					"ipbc"{ $http="https://support.ipbc.io/api/stats";	$TradeOgrePair = "BTC-IPBC"}
-					"rto"{ $http="http://pool.arto.cash:8117/stats";	$TradeOgrePair = "BTC-RTO"}
+					"ipbc"{ $http="https://support.ipbc.io/api/stats"; $TradeOgrePair = "BTC-TUBE"}
+					"rto"{ $http="http://pool.arto.cash:8117/stats"; $TradeOgrePair = "BTC-RTO"}
+					"xhv"{ $http="https://cryptoknight.cc/rpc/haven/stats";	$TradeOgrePair = "BTC-XHV"}
+					"xtl"{ $http="https://cryptoknight.cc/rpc/stellite/stats"; $TradeOgrePair = "BTC-XTL"}
+					#"ipbc"{ $http="https://cryptoknight.cc/rpc/ipbc/stats"; $TradeOgrePair = "BTC-TUBE"}
+					"grft"{ $http="https://cryptoknight.cc/rpc/graft/stats"; $TradeOgrePair = "BTC-GRFT"}
+					#"xao"{ $http="https://cryptoknight.cc/rpc/alloy/stats"; $TradeOgrePair = "BTC-XAO"}
 				}
 				writelog ("Stats URL: $http") $logfile $false
 				$CRYPTONOTE_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 30 | ConvertFrom-Json 
