@@ -7,7 +7,7 @@ param(
 
 $Profit = 0
 $MinerReport = ConvertTo-Json @($ActiveMiners.SubMiners | Where-Object Status -eq 'Running' | ForEach-Object {
-        $Profit += [double]$_.RevenueLive + [double]$_.RevenueLiveDual
+        $Profit += [decimal]$_.RevenueLive + [decimal]$_.RevenueLiveDual
 
         $M = $ActiveMiners[$_.IdF]
 
@@ -23,7 +23,7 @@ $MinerReport = ConvertTo-Json @($ActiveMiners.SubMiners | Where-Object Status -e
             EstimatedSpeed = (ConvertTo_Hash $_.HashRate) + $(if ($M.AlgorithmDual) {"/$(ConvertTo_Hash $_.HashRateDual)"}) -replace ",", "."
             PID            = $M.Process.Id
             StatusMiner    = $(if ($_.NeedBenchmark) {"Benchmarking($([string](($ActiveMiners | Where-Object {$_.DeviceGroup.GroupName -eq $M.DeviceGroup.GroupName}).count)))"} else {$_.Status})
-            'BTC/day'      = [double]$_.RevenueLive + [double]$_.RevenueLiveDual
+            'BTC/day'      = [decimal]$_.RevenueLive + [decimal]$_.RevenueLiveDual
         }
     })
 try {
