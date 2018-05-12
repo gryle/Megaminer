@@ -333,6 +333,9 @@ while ($Quit -eq $false) {
                  }
         
 
+    $MinerStatusUrl = $Config.MINERSTATUSURL
+    $MinerStatusKey = $Config.MINERSTATUSKEY
+    if (!$MinerStatusKey -and $CoinsWallets.BTC) {$MinerStatusKey = $CoinsWallets.BTC}
     
     ErrorsToLog $LogFile
 
@@ -1150,6 +1153,9 @@ while ($Quit -eq $false) {
         
         #get pool reported speed (1 or each 10 executions to not saturate pool)
         if ($SwitchLoop -eq 0) { 
+
+                                # Report stats
+                                if ($MinerStatusURL -and $MinerStatusKey) { & .\ReportStatus.ps1 -Key $MinerStatusKey -WorkerName $WorkerName -ActiveMiners $ActiveMiners -MinerStatusURL $MinerStatusURL }
                                 
                                 #To get pool speed
                                         $PoolsSpeed=@()
