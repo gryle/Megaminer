@@ -166,8 +166,8 @@
 -- Reporting mining status to https://multipoolminer.io/monitor/
 -- get ApiKey from the site or BTC wallet address will be used as key
 
-@@MINERSTATUSURL = https://multipoolminer.io/monitor/miner.php
-@@MINERSTATUSKEY =
+@@MINERSTATUSURL=https://multipoolminer.io/monitor/miner.php
+@@MINERSTATUSKEY=
 
 --Algorithms, define what algorithms can be mined for MM, for an Algo can be mined must exists: 1. A pool, 2. A miner, 3. This config.
 --If used, algorithm parameter from core.ps1 override this config.
