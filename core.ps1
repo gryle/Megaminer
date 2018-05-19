@@ -74,18 +74,19 @@ $ErrorActionPreference = "Continue"
 
 $config=get_config
 
-$Release="6.2.1"
+$Release="6.3"
 writelog ("Release $Release") $logfile $false
 
 if ($Groupnames -eq $null) {$Host.UI.RawUI.WindowTitle = "MegaMiner"} else {$Host.UI.RawUI.WindowTitle = "MM-" + ($Groupnames -join "/")}
 
 
 $env:CUDA_DEVICE_ORDER = 'PCI_BUS_ID' #This align cuda id with nvidia-smi order
-$env:GPU_FORCE_64BIT_PTR = 1 #For AMD
+$env:GPU_FORCE_64BIT_PTR = 0 #For AMD
 $env:GPU_MAX_HEAP_SIZE = 100 #For AMD
 $env:GPU_USE_SYNC_OBJECTS = 1 #For AMD
 $env:GPU_MAX_ALLOC_PERCENT = 100 #For AMD
 $env:GPU_SINGLE_ALLOC_PERCENT = 100 #For AMD
+
 
 
 
@@ -112,6 +113,7 @@ $StartTime=get-date
 
 
 if (($config.DEBUGLOG) -eq "ENABLED"){$DetailedLog=$True} else {$DetailedLog=$false}
+
 
 $Screen = $config.STARTSCREEN
   
@@ -225,7 +227,34 @@ if ($config.ApiPort -gt 0) {
     $Quit=$false        
 
 
-    
+
+
+#enable EthlargementPill
+
+if (($config.EthlargementPill) -like "REV*")
+    {
+    writelog "Starting ETHlargementPill " $logfile $false
+    $arg="-"+$config.EthlargementPill
+    $EthPill = Start-Process -FilePath "OhGodAnETHlargementPill-r2.exe"  -passthru  -Verb RunAs -ArgumentList $arg
+    } 
+
+
+
+# Check for updates
+     try {
+        $Request = Invoke-RestMethod -Uri "https://api.github.com/repos/tutulino/Megaminer/releases/latest" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop
+        $RemoteVersion = ($Request.tag_name -replace '^v')
+        
+
+        if ($RemoteVersion -gt $Release) {
+            writelog "THERE IS A NEW MEGAMINER RELEASE AVAILABLE, PLEASE DOWNLOAD" $logfile $false
+            Write-Host "THERE IS A NEW MEGAMINER RELEASE AVAILABLE, PLEASE DOWNLOAD" -ForegroundColor Yellow
+            start-sleep 5
+        }
+    } catch {
+        writelog  "Failed to get $Application updates." $logfile $false
+    }
+
 
 #----------------------------------------------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------------------------------
@@ -259,7 +288,7 @@ while ($Quit -eq $false) {
     $LocalCurrency= $config.LOCALCURRENCY
     if ($LocalCurrency.length -eq 0) { #for old config.txt compatibility
         switch ($location) {
-            'EU    ' {$LocalCurrency="EURO"}
+            'EU'     {$LocalCurrency="EURO"}
             'US'     {$LocalCurrency="DOLLAR"}
             'ASIA'   {$LocalCurrency="DOLLAR"}
             'GB'     {$LocalCurrency="GBP"}
@@ -1625,5 +1654,7 @@ while ($Quit -eq $false) {
     try{ActiveMiners | Where-Object process -ne $null | ForEach-Object {stop-process -Id $_.Process.Id} } catch {}
     try{Invoke-WebRequest ("http://localhost:"+[string]$config.ApiPort+"?command=exit") -timeoutsec 1 -UseDefaultCredentials} catch {}
     stop-process -Id $PID
+    if ($EthPill -eq $null) {stop-process -Id $EthPill}
+    
 
 

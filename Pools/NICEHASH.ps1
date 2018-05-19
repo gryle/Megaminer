@@ -58,7 +58,7 @@ if ($Querymode -eq "info"){
         $Result=@()
     
         if ($Request.Result.Workers -ne $null -and $Request.Result.Workers -ne ""){
-$A= $Request.Result.Workers
+
                 $Request.Result.Workers |ForEach-Object {
                                 $Result += [PSCustomObject]@{
                                         PoolName =$name
