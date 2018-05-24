@@ -187,7 +187,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					Host          = $_.server
 					Port          = $_.port
 					User          = $Wallet
-					Pass          = $(if ($_.symbol.tolower() -eq "loki") {"w=#WorkerName#"} else {"#WorkerName#"})
+					Pass          = $(if ($_.symbol.tolower() -eq "loki" -or $_.symbol.tolower() -eq "xrn") {"w=#WorkerName#"} else {"#WorkerName#"})
 					Location      = $_.location
 					SSL           = $false
 					Symbol        = $_.symbol
