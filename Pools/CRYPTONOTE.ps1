@@ -56,6 +56,7 @@ if ($Querymode -eq "SPEED")    {
 			#"ipbc"{$http="https://cryptoknight.cc/rpc/ipbc/stats_address?address="+$Info.user}
 			"grft"{$http="https://cryptoknight.cc/rpc/graft/stats_address?address="+$Info.user}
 			#"xao"{$http="https://cryptoknight.cc/rpc/alloy/stats_address?address="+$Info.user}
+			"xrn"{ $http="https://saronite.miner.rocks/api/stats_address?address="+$Info.user}
         }
 
         $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json 
@@ -104,6 +105,7 @@ if ($Querymode -eq "WALLET")    {
 			#"ipbc"{$http="https://cryptoknight.cc/rpc/ipbc/stats_address?address="+$Info.user; $CoinUnits = 100000000}
 			"grft"{$http="https://cryptoknight.cc/rpc/graft/stats_address?address="+$Info.user; $CoinUnits = 10000000000}
 			#"xao"{$http="https://cryptoknight.cc/rpc/alloy/stats_address?address="+$Info.user; $CoinUnits = 1000000000000}
+			"xrn"{ $http="https://saronite.miner.rocks/api/stats_address?address="+$Info.user; $CoinUnits = 1000000000}
 		}
 	    $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json 
 	}
@@ -138,6 +140,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
         #$CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="IPBC"; "algo"="IPBC";"port"=4461;"coin"="IPBC";"location"="US";"server"="ipbc.ingest.cryptoknight.cc"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="GRFT"; "algo"="cryptonightv7";"port"=9111;"coin"="GRAFT";"location"="US";"server"="graft.ingest.cryptoknight.cc"}
         #$CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XAO"; "algo"="Alloy";"port"=5661;"coin"="ALLOY";"location"="US";"server"="alloy.ingest.cryptoknight.cc"}
+        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XRN"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="SARONITE";"location"="EU";"server"="saronite.miner.rocks"}
      
         try {
                 $TRADEOGRE_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36" "https://tradeogre.com/api/v1/markets" -UseBasicParsing -timeoutsec 10 | ConvertFrom-Json 
@@ -163,6 +166,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					#"ipbc"{ $http="https://cryptoknight.cc/rpc/ipbc/stats"; $TradeOgrePair = "BTC-TUBE"}
 					"grft"{ $http="https://cryptoknight.cc/rpc/graft/stats"; $TradeOgrePair = "BTC-GRFT"}
 					#"xao"{ $http="https://cryptoknight.cc/rpc/alloy/stats"; $TradeOgrePair = "BTC-XAO"}
+					"xrn"{ $http="https://saronite.miner.rocks/api/stats"; $TradeOgrePair = "BTC-XRN"}
 				}
 				writelog ("Stats URL: $http") $logfile $false
 				$CRYPTONOTE_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 30 | ConvertFrom-Json 
