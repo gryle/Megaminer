@@ -74,7 +74,7 @@ $ErrorActionPreference = "Continue"
 
 $config=get_config
 
-$Release="6.3"
+$Release="6.4"
 writelog ("Release $Release") $logfile $false
 
 if ($Groupnames -eq $null) {$Host.UI.RawUI.WindowTitle = "MegaMiner"} else {$Host.UI.RawUI.WindowTitle = "MM-" + ($Groupnames -join "/")}
@@ -847,7 +847,7 @@ while ($Quit -eq $false) {
 
     $NeedBenchmark = $false
 
-    #checks if there is any cancelled miner that must reactivate
+    #checks if there is any cancelled miner must be reactivated
      $ActiveMiners.subminers | Where-Object {$_.Status -eq "Cancelled" -and $_.CancellationTime.TotalMinutes -gt 3600} | foreach-object {
 
         $_.Status = "Iddle"
@@ -888,7 +888,7 @@ while ($Quit -eq $false) {
         #look for best for next round
             $Candidates = $ActiveMiners | Where-Object {$_.GpuGroup.Id -eq $Type.Id -and $_.IsValid -and $_.Username -ne ""}
             $BestNow = $Candidates.Subminers |where-object Status -ne 'Cancelled' | Sort-Object -Descending {if ($_.NeedBenchmark) {1} else {0}}, Profits,{$Activeminers[$_.IdF].Algorithm},{$Activeminers[$_.IdF].PoolPrice},PowerLimit | Select-Object -First 1 
-            if ($BestNow -eq $null) {Writelog ("No detected any valid candidate for gpu group "+$Type.groupname) $LogFile $true  ; break  }
+            if ($BestNow -eq $null) {Writelog ("No detected any valid candidate for gpu group "+$Type.groupname) $LogFile $true  ; continue  }
             $BestNowLogMsg=$ActiveMiners[$BestNow.IdF].name+"/"+$ActiveMiners[$BestNow.IdF].Algorithms+'/'+$ActiveMiners[$BestNow.IdF].Coin+" with Power Limit "+[string]$BestNow.PowerLimit+" (id "+[string]$BestNow.IdF+"-"+[string]$BestNow.Id+") for group "+$Type.groupname
             $ProfitNow=$BestNow.Profits
 
