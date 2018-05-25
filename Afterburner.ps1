@@ -40,7 +40,11 @@ function Set-AfterburnerPowerLimit ([int]$PowerLimitPercent, [string]$DeviceGrou
     $DevicesArray=$Devices -split ','
     if ($DevicesArray.Length -gt 0) {
 
-        $PowerLimit = $PowerLimitPercent
+        if ($DeviceGroupType -eq "AMD") {
+            $PowerLimit = $PowerLimitPercent - 100
+        } else {
+            $PowerLimit = $PowerLimitPercent
+        }
 
         $Pattern = @{
             AMD    = '*Radeon*'
