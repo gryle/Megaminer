@@ -123,6 +123,10 @@
 
 
 
+-- [EXPERIMENTAL] MSI Afterburner support for AMD / CPU monitoring.
+-- If ENABLED, will use monitoring data from MSI Afterburner for GPU (AMD/NVIDIA)and CPU (Intel) real Power usage, Temperatures and Speeds
+-- Afterburner must be started before running Megaminer and continue running. If Afterburner is restarted, Megaminer must be also restarted.
+-- @@AFTERBURNER=ENABLED
 
 --[OPTIONAL]  Pools profit correction factors
 --Usually pools revenue is overestimated, this factor allows manual correction (Profit= ReportedPoolProfit * @@POOLPROFITFACTOR)
