@@ -228,6 +228,10 @@ if ($config.ApiPort -gt 0) {
 
 
 
+# Initialize MSI Afterburner
+if (($config.AFTERBURNER) -eq "ENABLED") {
+    . .\Afterburner.ps1
+}
 
 #enable EthlargementPill
 
@@ -906,8 +910,14 @@ while ($Quit -eq $false) {
         if ($BestLast.IdF -ne $BestNow.IdF -or  $BestLast.Id -ne $BestNow.Id -or $BestLast.Status -eq 'PendingCancellation' -or $BestLast.Status -eq 'Cancelled') { #something changes or some miner error
 
         if ($BestLast.IdF -eq $BestNow.IdF -and  $BestLast.Id -ne $BestNow.Id) {              #Must launch other subminer
-                            if ($ActiveMiners[$BestNow.IdF].GpuGroup.Type -eq 'NVIDIA' -and $BestNow.PowerLimit -gt 0) {set_Nvidia_Powerlimit $BestNow.PowerLimit $ActiveMiners[$BestNow.IdF].GpuGroup.gpus}
-                            if ($ActiveMiners[$BestNow.IdF].GpuGroup.Type -eq 'AMD'-and $BestNow.PowerLimit -gt 0){}
+                            if ($BestNow.PowerLimit -gt 0) {
+			        if ($abControl) {
+				    Set-AfterburnerPowerLimit -PowerLimitPercent $BestNow.PowerLimit -DeviceGroup $ActiveMiners[$BestNow.IdF].DeviceGroup
+			        } else {
+                                    if ($ActiveMiners[$BestNow.IdF].GpuGroup.Type -eq 'NVIDIA' -and $BestNow.PowerLimit -gt 0) {set_Nvidia_Powerlimit $BestNow.PowerLimit $ActiveMiners[$BestNow.IdF].GpuGroup.gpus}
+                                    if ($ActiveMiners[$BestNow.IdF].GpuGroup.Type -eq 'AMD'-and $BestNow.PowerLimit -gt 0){}
+			        }
+			    }
                             $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].best=$true
                             $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].Status= "Running"
                             $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].Stats.LastTimeActive = get-date
@@ -959,8 +969,14 @@ while ($Quit -eq $false) {
                                  
                                    }
                             #Start New
-                            if ($ActiveMiners[$BestNow.IdF].GpuGroup.Type -eq 'NVIDIA' -and $BestNow.PowerLimit -gt 0) {set_Nvidia_Powerlimit $BestNow.PowerLimit $ActiveMiners[$BestNow.IdF].GpuGroup.gpus}
-                            if ($ActiveMiners[$BestNow.IdF].GpuGroup.Type -eq 'AMD'-and $BestNow.PowerLimit -gt 0){}
+                            if ($BestNow.PowerLimit -gt 0) {
+                                if ($abControl) {
+                                    Set-AfterburnerPowerLimit -PowerLimitPercent $BestNow.PowerLimit -DeviceGroup $ActiveMiners[$BestNow.IdF].DeviceGroup
+                                } else {
+                                    if ($ActiveMiners[$BestNow.IdF].GpuGroup.Type -eq 'NVIDIA' -and $BestNow.PowerLimit -gt 0) {set_Nvidia_Powerlimit $BestNow.PowerLimit $ActiveMiners[$BestNow.IdF].GpuGroup.gpus}
+                                    if ($ActiveMiners[$BestNow.IdF].GpuGroup.Type -eq 'AMD'-and $BestNow.PowerLimit -gt 0){}
+                                }
+                            }
                             
                             $ActiveMiners[$BestNow.IdF].Subminers[$BestNow.Id].best=$true
 
