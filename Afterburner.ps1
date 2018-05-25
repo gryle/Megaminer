@@ -27,7 +27,7 @@ try {
     Start-Sleep -Seconds 5
 }
 
-function Set-AfterburnerPowerLimit ([int]$PowerLimitPercent, $DeviceGroup) {
+function Set-AfterburnerPowerLimit ([int]$PowerLimitPercent, [string]$DeviceGroupType, [string]$Devices) {
 
     try {
         $abMonitor.ReloadAll()
@@ -37,7 +37,8 @@ function Set-AfterburnerPowerLimit ([int]$PowerLimitPercent, $DeviceGroup) {
         throw "Failed to communicate with MSI Afterburner"
     }
 
-    if ($DeviceGroup.DevicesArray.Length -gt 0) {
+    $DevicesArray=$Devices -split ','
+    if ($DevicesArray.Length -gt 0) {
 
         $PowerLimit = $PowerLimitPercent - 100
 
@@ -47,7 +48,7 @@ function Set-AfterburnerPowerLimit ([int]$PowerLimitPercent, $DeviceGroup) {
             Intel  = '*Intel*'
         }
 
-        $Devices = @($abMonitor.GpuEntries | Where-Object Device -like $Pattern.$($DeviceGroup.Type) | Select-Object -ExpandProperty Index)[$DeviceGroup.DevicesArray]
+        $Devices = @($abMonitor.GpuEntries | Where-Object Device -like $Pattern.$($DeviceGroupType) | Select-Object -ExpandProperty Index)[$DevicesArray]
 
         foreach ($device in $Devices) {
             if ($abControl.GpuEntries[$device].PowerLimitCur -ne $PowerLimit) {
