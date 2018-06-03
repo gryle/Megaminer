@@ -48,6 +48,7 @@ if ($Querymode -eq "SPEED")    {
         switch ($Info.symbol.tolower()){
             "sumo"{$http="https://sumokoin.hashvault.pro/api/miner/"+$Info.user+"/stats"}
             "itns"{$http="https://intense.hashvault.pro/api/miner/"+$Info.user+"/stats"}
+            "aeon"{$http="https://aeon.hashvault.pro/api/miner/"+$Info.user+"/stats"}
         }
 
         if ($http -ne $null) { $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json  }
@@ -83,6 +84,7 @@ if ($Querymode -eq "WALLET")    {
 		switch ($Info.symbol.tolower()){
 			"sumo"{$coinUnits=1000000000; $http="https://sumokoin.hashvault.pro/api/miner/"+$Info.user+"/stats"}
 			"itns"{$coinUnits=100000000; $http="https://intense.hashvault.pro/api/miner/"+$Info.user+"/stats"}
+			"aeon"{$coinUnits=1000000000000; $http="https://aeon.hashvault.pro/api/miner/"+$Info.user+"/stats"}
 		}
 		if ($http -ne $null) { $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json  }
 	}
@@ -106,8 +108,9 @@ if ($Querymode -eq "WALLET")    {
 if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 
         $HASHVAULT_Pools=@()
-        $HASHVAULT_Pools +=[pscustomobject]@{"symbol"="SUMO"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="SUMOKOIN";"location"="EU";"server"="pool.sumokoin.hashvault.pro"}
+        #$HASHVAULT_Pools +=[pscustomobject]@{"symbol"="SUMO"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="SUMOKOIN";"location"="EU";"server"="pool.sumokoin.hashvault.pro"}
         $HASHVAULT_Pools +=[pscustomobject]@{"symbol"="ITNS"; "algo"="CryptoNightV7";"port"=5555;"coin"="INTENSECOIN";"location"="EU";"server"="pool.intense.hashvault.pro"}
+        $HASHVAULT_Pools +=[pscustomobject]@{"symbol"="AEON"; "algo"="CryptoLightV7";"port"=5555;"coin"="AEON";"location"="EU";"server"="pool.aeon.hashvault.pro"}
 
      
         try {
@@ -125,6 +128,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 				switch ($_.symbol.tolower()){
 					"sumo"{ $http="https://sumokoin.hashvault.pro/api"; $CoinUnits = 1000000000; $TradeOgrePair = "BTC-SUMO"}
 					"itns"{ $http="https://intense.hashvault.pro/api"; $CoinUnits = 100000000; $TradeOgrePair = "BTC-ITNS"}
+					"aeon"{ $http="https://aeon.hashvault.pro/api"; $CoinUnits = 1000000000000; $TradeOgrePair = "BTC-AEON"}
 				}
 				writelog ("Stats URL: $http") $logfile $false
 				$HASHVAULT_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  "$http/network/stats" -UseBasicParsing -timeoutsec 10 | ConvertFrom-Json 
