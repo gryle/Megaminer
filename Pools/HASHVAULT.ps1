@@ -110,7 +110,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
         $HASHVAULT_Pools=@()
         #$HASHVAULT_Pools +=[pscustomobject]@{"symbol"="SUMO"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="SUMOKOIN";"location"="EU";"server"="pool.sumokoin.hashvault.pro"}
         $HASHVAULT_Pools +=[pscustomobject]@{"symbol"="ITNS"; "algo"="CryptoNightV7";"port"=5555;"coin"="INTENSECOIN";"location"="EU";"server"="pool.intense.hashvault.pro"}
-        $HASHVAULT_Pools +=[pscustomobject]@{"symbol"="AEON"; "algo"="CryptoLightV7";"port"=5555;"coin"="AEON";"location"="EU";"server"="pool.aeon.hashvault.pro"}
+        #$HASHVAULT_Pools +=[pscustomobject]@{"symbol"="AEON"; "algo"="CryptoLightV7";"port"=5555;"coin"="AEON";"location"="EU";"server"="pool.aeon.hashvault.pro"}
 
      
         try {
