@@ -11,7 +11,7 @@
 "PrelaunchCommand":"",
 "Algorithms": [
                 {"Cryptonight":"--use-nicehash --currency cryptonight"},
-                {"Stellite":"--currency stellite"},
+                {"CryptoNightXTL":"--currency stellite"},
                 {"CryptonightV7":"--use-nicehash --currency monero7"}
               ]
 

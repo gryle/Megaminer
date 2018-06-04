@@ -139,11 +139,11 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="MSR"; "algo"="CryptoNightV7";"port"=5555;"coin"="MASARI";"location"="EU";"server"="masari.superpools.net"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="LOKI"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="LOKI";"location"="EU";"server"="loki.miner.rocks"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XAO"; "algo"="Alloy";"port"=5661;"coin"="ALLOY";"location"="US";"server"="alloy.ingest.cryptoknight.cc"}
-        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="IPBC"; "algo"="IPBC";"port"=15555;"coin"="IPBC";"location"="US";"server"="support.ipbc.io"}
+        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="IPBC"; "algo"="CryptoLightIBPC";"port"=15555;"coin"="IPBC";"location"="US";"server"="support.ipbc.io"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="RTO"; "algo"="Arto";"port"=5555;"coin"="Arto";"location"="US";"server"="pool.arto.cash"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XHV"; "algo"="CryptoNightHeavy";"port"=5531;"coin"="HAVEN";"location"="US";"server"="haven.ingest.cryptoknight.cc"}
-        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XTL"; "algo"="cryptonightv7";"port"=16221;"coin"="STELLITE";"location"="US";"server"="stellite.ingest.cryptoknight.cc"}
-        #$CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="IPBC"; "algo"="IPBC";"port"=4461;"coin"="IPBC";"location"="US";"server"="ipbc.ingest.cryptoknight.cc"}
+        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XTL"; "algo"="CryptoNightXTL";"port"=16221;"coin"="STELLITE";"location"="US";"server"="stellite.ingest.cryptoknight.cc"}
+        #$CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="IPBC"; "algo"="CryptoLightIBPC";"port"=4461;"coin"="IPBC";"location"="US";"server"="ipbc.ingest.cryptoknight.cc"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="GRFT"; "algo"="cryptonightv7";"port"=9111;"coin"="GRAFT";"location"="US";"server"="graft.ingest.cryptoknight.cc"}
         #$CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XAO"; "algo"="Alloy";"port"=5661;"coin"="ALLOY";"location"="US";"server"="alloy.ingest.cryptoknight.cc"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XRN"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="SARONITE";"location"="EU";"server"="saronite.miner.rocks"}

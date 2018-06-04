@@ -13,7 +13,7 @@
                 {"CryptoLightV7": "--algo=4"},
                 {"CryptoNightV7": "--algo=1"},
                 {"CryptoNightHeavy": "--algo=2"},
-                {"IPBC":"--algo=5"}
+                {"CryptoLightIBPC":"--algo=5"}
               ]
 
 }

@@ -10,8 +10,8 @@
 "Fee":"0.01",
 "PrelaunchCommand":"",
 "Algorithms": [
-                {"Haven":"--currency haven --nvidia nvidia_heavy.txt --poolconf pools_haven.txt"},
-                {"IPBC":"--currency ipbc --nvidia nvidia_light.txt --poolconf pools_ipbc.txt"},
+                {"CryptoNightXTL":"--currency stellite --poolconf pools_xtl.txt"},
+                {"CryptoLightIBPC":"--currency ipbc --nvidia nvidia_light.txt --poolconf pools_ipbc.txt"},
                 {"CryptoNightHeavy":"--currency cryptonight_heavy --nvidia nvidia_heavy.txt --poolconf pools_heavy.txt"},
                 {"CryptoLightV7":"--currency cryptonight_lite_v7 --nvidia nvidia_light.txt --poolconf pools_light_v7.txt"},
                 {"CryptoLight":"--currency cryptonight_lite --nvidia nvidia_light.txt --poolconf pools_light.txt"},

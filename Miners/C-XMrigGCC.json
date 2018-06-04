@@ -11,8 +11,11 @@
 "ProcessPriority":"Idle",
 "Fee" : 0.01,
 "Algorithms": [
-                {"CRYPTONIGHT":""},
-                {"CRYPTONIGHTV7":"--variant 1"}
+                {"CryptoLightV7":"-a cryptonight-lite --variant 1"},
+                {"CryptoNightV7":"-a cryptonight --variant 1"},
+                {"CryptoNightHeavy":"-a cryptonight-heavy"},
+                {"CryptoLightIBPC":"-a cryptonight-lite --variant ipbc"},
+                {"CryptoNightXTL":"-a cryptonight --variant xtl"}
               ]
 
 }

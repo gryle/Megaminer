@@ -10,7 +10,7 @@
 "Fee":"0.01",
 "PrelaunchCommand":"",
 "Algorithms": [
-                {"IPBC":"--currency ipbc"}
+                {"CryptoLightIBPC":"--currency ipbc"}
               ]
 
 }
