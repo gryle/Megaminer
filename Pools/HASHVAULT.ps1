@@ -46,7 +46,7 @@ if ($Querymode -eq "SPEED")    {
         #$http="https://api.nanopool.org/v1/"+$Info.symbol.tolower()+"/history/"+$Info.user
 		$http = $null
         switch ($Info.symbol.tolower()){
-            "sumo"{$http="https://sumokoin.hashvault.pro/api/miner/"+$Info.user+"/stats"}
+            "ryo"{$http="https://ryo.hashvault.pro/api/miner/"+$Info.user+"/stats"}
             "itns"{$http="https://intense.hashvault.pro/api/miner/"+$Info.user+"/stats"}
             "aeon"{$http="https://aeon.hashvault.pro/api/miner/"+$Info.user+"/stats"}
         }
@@ -82,7 +82,7 @@ if ($Querymode -eq "WALLET")    {
 		$http = $null
 		$coinUnits = 1
 		switch ($Info.symbol.tolower()){
-			"sumo"{$coinUnits=1000000000; $http="https://sumokoin.hashvault.pro/api/miner/"+$Info.user+"/stats"}
+			"ryo"{$coinUnits=1000000000; $http="https://ryo.hashvault.pro/api/miner/"+$Info.user+"/stats"}
 			"itns"{$coinUnits=100000000; $http="https://intense.hashvault.pro/api/miner/"+$Info.user+"/stats"}
 			"aeon"{$coinUnits=1000000000000; $http="https://aeon.hashvault.pro/api/miner/"+$Info.user+"/stats"}
 		}
@@ -108,7 +108,7 @@ if ($Querymode -eq "WALLET")    {
 if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 
         $HASHVAULT_Pools=@()
-        #$HASHVAULT_Pools +=[pscustomobject]@{"symbol"="SUMO"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="SUMOKOIN";"location"="EU";"server"="pool.sumokoin.hashvault.pro"}
+        $HASHVAULT_Pools +=[pscustomobject]@{"symbol"="RYO"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="RYO";"location"="EU";"server"="pool.ryo.hashvault.pro"}
         $HASHVAULT_Pools +=[pscustomobject]@{"symbol"="ITNS"; "algo"="CryptoNightV7";"port"=5555;"coin"="INTENSECOIN";"location"="EU";"server"="pool.intense.hashvault.pro"}
         #$HASHVAULT_Pools +=[pscustomobject]@{"symbol"="AEON"; "algo"="CryptoLightV7";"port"=5555;"coin"="AEON";"location"="EU";"server"="pool.aeon.hashvault.pro"}
 
@@ -126,7 +126,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 			try {
 				$HASHVAULT_Request=$null
 				switch ($_.symbol.tolower()){
-					"sumo"{ $http="https://sumokoin.hashvault.pro/api"; $CoinUnits = 1000000000; $TradeOgrePair = "BTC-SUMO"}
+					"ryo"{ $http="https://ryo.hashvault.pro/api"; $CoinUnits = 1000000000; $TradeOgrePair = "BTC-RYO"}
 					"itns"{ $http="https://intense.hashvault.pro/api"; $CoinUnits = 100000000; $TradeOgrePair = "BTC-ITNS"}
 					"aeon"{ $http="https://aeon.hashvault.pro/api"; $CoinUnits = 1000000000000; $TradeOgrePair = "BTC-AEON"}
 				}
