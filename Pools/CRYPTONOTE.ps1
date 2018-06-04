@@ -149,7 +149,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XRN"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="SARONITE";"location"="EU";"server"="saronite.miner.rocks"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="ETN"; "algo"="cryptonightv7";"port"=5202;"coin"="ELECTRONEUM";"location"="US";"server"="etn.ingest.cryptoknight.cc"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="ELYA"; "algo"="cryptonightv7";"port"=50202;"coin"="ELYA";"location"="US";"server"="elya.ingest.cryptoknight.cc"}
-        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="AEON"; "algo"="CryptoLightV7";"port"=5542;"coin"="AEON";"location"="US";"server"="aeon.ingest.cryptoknight.cc"}
+        #$CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="AEON"; "algo"="CryptoLightV7";"port"=5542;"coin"="AEON";"location"="US";"server"="aeon.ingest.cryptoknight.cc"}
      
         try {
                 $TRADEOGRE_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36" "https://tradeogre.com/api/v1/markets" -UseBasicParsing -timeoutsec 10 | ConvertFrom-Json 
@@ -199,7 +199,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					Host          = $_.server
 					Port          = $_.port
 					User          = $Wallet
-					Pass          = $(if ($_.symbol.tolower() -eq "loki" -or $_.symbol.tolower() -eq "xrn") {"w=#WorkerName#"} else {"#WorkerName#"})
+					Pass          = $(if ($_.server -Match "miner.rocks") {"w=#WorkerName#"} else {"#WorkerName#"})
 					Location      = $_.location
 					SSL           = $false
 					Symbol        = $_.symbol
@@ -214,7 +214,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					PoolName = $Name
 					Fee = [double] $CRYPTONOTE_Request.config.fee / 100
 					EthStMode = 0
-					RewardType=$RewardType
+					RewardType=$(if ($_.server -Match "cryptoknight.cc") { "PPS" } else { $RewardType } )
 				}
 				Remove-Variable CRYPTONOTE_Request
 			
