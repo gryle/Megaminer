@@ -49,6 +49,7 @@ if ($Querymode -eq "SPEED")    {
             "ryo"{$http="https://ryo.hashvault.pro/api/miner/"+$Info.user+"/stats"}
             "itns"{$http="https://intense.hashvault.pro/api/miner/"+$Info.user+"/stats"}
             "aeon"{$http="https://aeon.hashvault.pro/api/miner/"+$Info.user+"/stats"}
+            "msr"{$http="https://masari.hashvault.pro/api/miner/"+$Info.user+"/stats"}
         }
 
         if ($http -ne $null) { $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json  }
@@ -85,6 +86,7 @@ if ($Querymode -eq "WALLET")    {
 			"ryo"{$coinUnits=1000000000; $http="https://ryo.hashvault.pro/api/miner/"+$Info.user+"/stats"}
 			"itns"{$coinUnits=100000000; $http="https://intense.hashvault.pro/api/miner/"+$Info.user+"/stats"}
 			"aeon"{$coinUnits=1000000000000; $http="https://aeon.hashvault.pro/api/miner/"+$Info.user+"/stats"}
+                        "msr"{$coinUnits=1000000000000; $http="https://masari.hashvault.pro/api/miner/"+$Info.user+"/stats"}
 		}
 		if ($http -ne $null) { $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json  }
 	}
@@ -111,6 +113,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
         $HASHVAULT_Pools +=[pscustomobject]@{"symbol"="RYO"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="RYO";"location"="EU";"server"="pool.ryo.hashvault.pro"}
         $HASHVAULT_Pools +=[pscustomobject]@{"symbol"="ITNS"; "algo"="CryptoNightV7";"port"=5555;"coin"="INTENSECOIN";"location"="EU";"server"="pool.intense.hashvault.pro"}
         $HASHVAULT_Pools +=[pscustomobject]@{"symbol"="AEON"; "algo"="CryptoLightV7";"port"=5555;"coin"="AEON";"location"="EU";"server"="pool.aeon.hashvault.pro"}
+        $HASHVAULT_Pools +=[pscustomobject]@{"symbol"="MSR"; "algo"="CryptoNightV7";"port"=5555;"coin"="MASARI";"location"="EU";"server"="pool.masari.hashvault.pro"}
 
      
         try {
@@ -129,6 +132,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					"ryo"{ $http="https://ryo.hashvault.pro/api"; $CoinUnits = 1000000000; $TradeOgrePair = "BTC-RYO"}
 					"itns"{ $http="https://intense.hashvault.pro/api"; $CoinUnits = 100000000; $TradeOgrePair = "BTC-ITNS"}
 					"aeon"{ $http="https://aeon.hashvault.pro/api"; $CoinUnits = 1000000000000; $TradeOgrePair = "BTC-AEON"}
+					"msr"{ $http="https://masari.hashvault.pro/api"; $CoinUnits = 1000000000000; $TradeOgrePair = "BTC-MSR"}
 				}
 				writelog ("Stats URL: $http") $logfile $false
 				$HASHVAULT_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  "$http/network/stats" -UseBasicParsing -timeoutsec 10 | ConvertFrom-Json 

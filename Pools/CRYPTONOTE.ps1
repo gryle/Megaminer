@@ -46,8 +46,7 @@ if ($Querymode -eq "SPEED")    {
         #$http="https://api.nanopool.org/v1/"+$Info.symbol.tolower()+"/history/"+$Info.user
         switch ($Info.symbol.tolower()){
 			"omb"{ $http="https://omb.infinity-pools.cc:8119/stats_address?address="+$Info.user}
-			#"msr"{ $http="https://masari.superpools.net/api/stats_address?address="+$Info.user}
-			"msr"{ $http="http://id.masari.network:9117/stats_address?address="+$Info.user}
+			"msr"{ $http="https://masari.superpools.net/api/stats_address?address="+$Info.user}
 			"loki"{ $http="https://loki.miner.rocks/api/stats_address?address="+$Info.user}
 			"xao"{$http="https://cryptoknight.cc/rpc/alloy/stats_address?address="+$Info.user}
 			"ipbc"{$http="https://support.ipbc.io/api/stats_address?address="+$Info.user}
@@ -99,8 +98,7 @@ if ($Querymode -eq "WALLET")    {
 	    #$http="https://api.nanopool.org/v1/"+$Info.symbol.tolower()+"/balance/"+$Info.user
 		switch ($Info.symbol.tolower()){
 			"omb"{ $http="https://omb.infinity-pools.cc:8119/stats_address?address="+$Info.user; $CoinUnits = 1000000000}
-			#"msr"{ $http="https://masari.superpools.net/api/stats_address?address="+$Info.user; $CoinUnits = 1000000000000}
-			"msr"{ $http="http://id.masari.network:9117/stats_address?address="+$Info.user; $CoinUnits = 1000000000000}
+			"msr"{ $http="https://masari.superpools.net/api/stats_address?address="+$Info.user; $CoinUnits = 1000000000000}
 			"loki"{ $http="https://loki.miner.rocks/api/stats_address?address="+$Info.user; $CoinUnits = 1000000000}
 			"xao"{$http="https://cryptoknight.cc/rpc/alloy/stats_address?address="+$Info.user; $CoinUnits = 1000000000000}
 			"ipbc"{$http="https://support.ipbc.io/api/stats_address?address="+$Info.user; $CoinUnits = 100000000}
@@ -139,7 +137,6 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
         $CRYPTONOTE_Pools=@()
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="OMB"; "algo"="CryptoNightHeavy";"port"=4446;"coin"="OMBRE";"location"="EU";"server"="ombre.infinity-pools.cf"}
         #$CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="MSR"; "algo"="CryptoNightV7";"port"=5555;"coin"="MASARI";"location"="EU";"server"="masari.superpools.net"}
-        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="MSR"; "algo"="CryptoNightV7";"port"=5555;"coin"="MASARI";"location"="EU";"server"="eu.masari.network"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="LOKI"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="LOKI";"location"="EU";"server"="loki.miner.rocks"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XAO"; "algo"="Alloy";"port"=5661;"coin"="ALLOY";"location"="US";"server"="alloy.ingest.cryptoknight.cc"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="IPBC"; "algo"="CryptoLightIBPC";"port"=15555;"coin"="IPBC";"location"="US";"server"="support.ipbc.io"}
@@ -168,8 +165,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 				$CRYPTONOTE_Request=$null
 				switch ($_.symbol.tolower()){
 					"omb"{ $http="https://omb.infinity-pools.cc:8119/stats"; $TradeOgrePair = "BTC-OMB"}
-					#"msr"{ $http="https://masari.superpools.net/api/stats"; $TradeOgrePair = "BTC-MSR"}
-					"msr"{ $http="http://id.masari.network:9117/stats"; $TradeOgrePair = "BTC-MSR"}
+					"msr"{ $http="https://masari.superpools.net/api/stats"; $TradeOgrePair = "BTC-MSR"}
 					"loki"{ $http="https://loki.miner.rocks/api/stats"; $TradeOgrePair = "BTC-LOKI"}
 					"xao"{ $http="https://cryptoknight.cc/rpc/alloy/stats";	$TradeOgrePair = "BTC-XAO"}
 					"ipbc"{ $http="https://support.ipbc.io/api/stats"; $TradeOgrePair = "BTC-TUBE"}
