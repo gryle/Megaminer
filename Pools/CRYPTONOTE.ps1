@@ -149,7 +149,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="GRFT"; "algo"="cryptonightv7";"port"=9111;"coin"="GRAFT";"location"="US";"server"="graft.ingest.cryptoknight.cc"}
         #$CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XAO"; "algo"="Alloy";"port"=5661;"coin"="ALLOY";"location"="US";"server"="alloy.ingest.cryptoknight.cc"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="XRN"; "algo"="CryptoNightHeavy";"port"=5555;"coin"="SARONITE";"location"="EU";"server"="saronite.miner.rocks"}
-        $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="ETN"; "algo"="cryptonightv7";"port"=5202;"coin"="ELECTRONEUM";"location"="US";"server"="etn.ingest.cryptoknight.cc"}
+        #$CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="ETN"; "algo"="cryptonightv7";"port"=5202;"coin"="ELECTRONEUM";"location"="US";"server"="etn.ingest.cryptoknight.cc"}
         #$CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="ETN"; "algo"="cryptonightv7";"port"=5555;"coin"="ELECTRONEUM";"location"="EU";"server"="pool.etn.spacepools.org"}
         $CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="ELYA"; "algo"="cryptonightv7";"port"=50202;"coin"="ELYA";"location"="US";"server"="elya.ingest.cryptoknight.cc"}
         #$CRYPTONOTE_Pools +=[pscustomobject]@{"symbol"="AEON"; "algo"="CryptoLightV7";"port"=5542;"coin"="AEON";"location"="US";"server"="aeon.ingest.cryptoknight.cc"}

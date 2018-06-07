@@ -50,6 +50,7 @@ if ($Querymode -eq "SPEED")    {
             "itns"{$http="https://intense.hashvault.pro/api/miner/"+$Info.user+"/stats"}
             "aeon"{$http="https://aeon.hashvault.pro/api/miner/"+$Info.user+"/stats"}
             "msr"{$http="https://masari.hashvault.pro/api/miner/"+$Info.user+"/stats"}
+            "etn"{$http="https://electroneum.hashvault.pro/api/miner/"+$Info.user+"/stats"}
         }
 
         if ($http -ne $null) { $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json  }
@@ -87,6 +88,7 @@ if ($Querymode -eq "WALLET")    {
 			"itns"{$coinUnits=100000000; $http="https://intense.hashvault.pro/api/miner/"+$Info.user+"/stats"}
 			"aeon"{$coinUnits=1000000000000; $http="https://aeon.hashvault.pro/api/miner/"+$Info.user+"/stats"}
                         "msr"{$coinUnits=1000000000000; $http="https://masari.hashvault.pro/api/miner/"+$Info.user+"/stats"}
+			"etn"{ $coinUnits=100; $http="https://electroneum.hashvault.pro/api/miner/"+$Info.user+"/stats"}
 		}
 		if ($http -ne $null) { $Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  $http -UseBasicParsing -timeoutsec 5 | ConvertFrom-Json  }
 	}
@@ -114,6 +116,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
         $HASHVAULT_Pools +=[pscustomobject]@{"symbol"="ITNS"; "algo"="CryptoNightV7";"port"=5555;"coin"="INTENSECOIN";"location"="EU";"server"="pool.intense.hashvault.pro"}
         $HASHVAULT_Pools +=[pscustomobject]@{"symbol"="AEON"; "algo"="CryptoLightV7";"port"=5555;"coin"="AEON";"location"="EU";"server"="pool.aeon.hashvault.pro"}
         $HASHVAULT_Pools +=[pscustomobject]@{"symbol"="MSR"; "algo"="CryptoNightV7";"port"=5555;"coin"="MASARI";"location"="EU";"server"="pool.masari.hashvault.pro"}
+        $HASHVAULT_Pools +=[pscustomobject]@{"symbol"="ETN"; "algo"="CryptoNightV7";"port"=5555;"coin"="ELECTRONEUM";"location"="EU";"server"="pool.electroneum.hashvault.pro"}
 
      
         try {
@@ -133,6 +136,7 @@ if (($Querymode -eq "core" ) -or ($Querymode -eq "Menu")){
 					"itns"{ $http="https://intense.hashvault.pro/api"; $CoinUnits = 100000000; $TradeOgrePair = "BTC-ITNS"}
 					"aeon"{ $http="https://aeon.hashvault.pro/api"; $CoinUnits = 1000000000000; $TradeOgrePair = "BTC-AEON"}
 					"msr"{ $http="https://masari.hashvault.pro/api"; $CoinUnits = 1000000000000; $TradeOgrePair = "BTC-MSR"}
+					"etn"{ $http="https://electroneum.hashvault.pro/api"; $CoinUnits = 100; $TradeOgrePair = "BTC-ETN"}
 				}
 				writelog ("Stats URL: $http") $logfile $false
 				$HASHVAULT_Request = Invoke-WebRequest -UserAgent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"  "$http/network/stats" -UseBasicParsing -timeoutsec 10 | ConvertFrom-Json 
