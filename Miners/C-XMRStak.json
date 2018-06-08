@@ -18,9 +18,6 @@
                 {"CryptoLight":"--currency cryptonight_lite --cpu cpu_light.txt --poolconf pools_light.txt"},
                 {"CryptoNightV7":"--use-nicehash --currency cryptonight_v7 --poolconf pools_v7.txt"},
                 {"CryptoNight":"--use-nicehash --currency cryptonight"}
-                {"Cryptonight":"--use-nicehash --currency cryptonight"},
-                {"Stellite":"--currency stellite"},
-                {"CryptonightV7":"--use-nicehash --currency monero7"}
               ]
 
 }

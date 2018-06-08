@@ -10,7 +10,6 @@
 "Fee":"0.01",
 "PrelaunchCommand":"",
 "Algorithms": [
-                {"CryptoNightXTL":"--currency stellite --poolconf pools_xtl.txt"},
                 {"CryptoLightIBPC":"--currency ipbc --amd amd_light.txt --poolconf pools_ipbc.txt"},
                 {"CryptoNightHeavy":"--currency cryptonight_heavy --amd amd_heavy.txt --poolconf pools_heavy.txt"},
                 {"CryptoLightV7":"--currency cryptonight_lite_v7 --amd amd_light.txt --poolconf pools_light_v7.txt"},
