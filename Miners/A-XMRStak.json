@@ -1,7 +1,7 @@
 {
-"Path" : ".\\Bin\\AMD-XMR_STAK\\xmr-stak-win64\\xmr-stak.exe",
-"ExtractionPath" : ".\\Bin\\AMD-XMR_STAK\\",
-"Uri" : "https://github.com/fireice-uk/xmr-stak/releases/download/2.4.2/xmr-stak-win64.zip",
+"Path" : ".\\Bin\\AMD-XMR_STAK-2.4.4\\xmr-stak-win64\\xmr-stak.exe",
+"ExtractionPath" : ".\\Bin\\AMD-XMR_STAK-2.4.4\\",
+"Uri" : "https://github.com/fireice-uk/xmr-stak/releases/download/2.4.4/xmr-stak-win64.zip",
 "Types" : ["AMD"],
 "Arguments" : "--noUAC --noCPU --noNVIDIA --use-nicehash --url #SERVER#:#PORT# --user #LOGIN# --pass #PASSWORD# -r #WORKERNAME# --httpd #APIPORT# #ALGORITHMPARAMETERS#",
 "API" : "fireice",
@@ -10,9 +10,13 @@
 "Fee":"0.01",
 "PrelaunchCommand":"",
 "Algorithms": [
-                {"Cryptonight":"--use-nicehash --currency cryptonight"},
-                {"CryptoNightXTL":"--currency stellite"},
-                {"CryptonightV7":"--use-nicehash --currency monero7"}
+                {"CryptoNightXTL":"--currency stellite --poolconf pools_xtl.txt"},
+                {"CryptoLightIBPC":"--currency ipbc --amd amd_light.txt --poolconf pools_ipbc.txt"},
+                {"CryptoNightHeavy":"--currency cryptonight_heavy --amd amd_heavy.txt --poolconf pools_heavy.txt"},
+                {"CryptoLightV7":"--currency cryptonight_lite_v7 --amd amd_light.txt --poolconf pools_light_v7.txt"},
+                {"CryptoLight":"--currency cryptonight_lite --amd amd_light.txt --poolconf pools_light.txt"},
+                {"CryptoNightV7":"--use-nicehash --currency cryptonight_v7 --poolconf pools_v7.txt"},
+                {"CryptoNight":"--use-nicehash --currency cryptonight"}
               ]
 
 }
